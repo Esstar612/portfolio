@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 const fields = [
-  { name: 'name', label: 'Your name', type: 'text', autoComplete: 'name' },
-  { name: 'email', label: 'Your email', type: 'email', autoComplete: 'email' },
+  { name: 'name', label: 'Your name', type: 'text', autoComplete: 'name', maxLength: 100 },
+  { name: 'email', label: 'Your email', type: 'email', autoComplete: 'email', maxLength: 200 },
 ] as const;
 
 export function ContactForm() {
@@ -24,6 +24,7 @@ export function ContactForm() {
           name: formData.get('name'),
           email: formData.get('email'),
           message: formData.get('message'),
+          company: formData.get('company'),
         }),
       });
       if (res.ok) {
@@ -57,7 +58,7 @@ export function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="relative space-y-4">
       {fields.map((field) => (
         <div key={field.name}>
           <label htmlFor={`contact-${field.name}`} className="sr-only">
@@ -69,6 +70,7 @@ export function ContactForm() {
             type={field.type}
             autoComplete={field.autoComplete}
             placeholder={field.label}
+            maxLength={field.maxLength}
             required
             className={inputStyles}
             style={inputStyle}
@@ -84,11 +86,18 @@ export function ContactForm() {
           name="message"
           rows={5}
           placeholder="Your message"
+          maxLength={5000}
           required
           className={inputStyles + ' resize-none'}
           style={inputStyle}
         />
       </div>
+      {/* Honeypot — invisible to people, tempting to bots. */}
+      <div className="absolute left-[-9999px]" aria-hidden>
+        <label htmlFor="contact-company">Company</label>
+        <input id="contact-company" name="company" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
+
       <Button type="submit" disabled={status === 'sending'}>
         {status === 'sending' ? 'Sending...' : 'Send Message'}
       </Button>

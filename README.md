@@ -132,11 +132,25 @@ Edit `src/app/about/page.tsx` with your bio and timeline.
 
 ### 6. Wire Up Contact Form
 
-The contact form API route at `src/app/api/contact/route.ts` includes a TODO for email service integration. Recommended services:
+The contact form posts to `src/app/api/contact/route.ts`, which validates the
+submission and sends it through [Resend](https://resend.com).
 
-- [Resend](https://resend.com) (recommended, great DX)
-- [SendGrid](https://sendgrid.com)
-- [AWS SES](https://aws.amazon.com/ses/)
+1. Create a Resend account and an API key at https://resend.com/api-keys
+2. Set `RESEND_API_KEY` locally in `.env.local`, and in your host's environment
+   variables for production (on Vercel: Settings -> Environment Variables, then
+   redeploy -- env changes only apply to new deployments)
+3. Optionally set `CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL` to override the
+   defaults
+
+Without a verified domain, Resend's shared `onboarding@resend.dev` sender only
+delivers to the address that owns the Resend account. Verify a domain to send
+from your own address.
+
+Without `RESEND_API_KEY` the route returns 503 and the form tells visitors to
+email you directly, rather than accepting a message that goes nowhere.
+
+The form includes a honeypot field; submissions that fill it get a success
+response but are never delivered.
 
 ## Deployment
 
