@@ -7,7 +7,7 @@ A production-ready portfolio website built with Next.js 14, TypeScript, and Tail
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
-- **Animations:** Framer Motion + CSS animations
+- **Animations:** CSS animations (no JS animation library)
 - **Dark Mode:** next-themes
 - **Icons:** Lucide React
 - **Deployment:** Vercel-ready

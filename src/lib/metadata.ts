@@ -24,7 +24,9 @@ export function createMetadata({
   const pageImage = image || siteConfig.ogImage;
 
   return {
-    title: pageTitle,
+    // A bare string lets the root layout's `%s — Name` template apply once;
+    // `absolute` avoids doubling the suffix on the default title.
+    title: title ? title : { absolute: siteConfig.title },
     description: pageDescription,
     metadataBase: new URL(siteConfig.url),
     alternates: {

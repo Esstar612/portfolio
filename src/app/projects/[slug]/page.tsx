@@ -8,6 +8,7 @@ import { Tag } from '@/components/ui/tag';
 import { Section } from '@/components/ui/section';
 import { getProjectBySlug, getAllProjectSlugs } from '@/data/projects';
 import { createMetadata } from '@/lib/metadata';
+import { getImageSize } from '@/lib/image-size';
 
 export function generateStaticParams() {
   return getAllProjectSlugs().map((slug) => ({ slug }));
@@ -55,7 +56,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
       {/* Hero image */}
       <div className="mx-auto max-w-[1100px] px-6 lg:px-8">
         <div className="relative aspect-[16/9] overflow-hidden rounded-2xl" style={{ border: '1px solid var(--color-border)' }}>
-          <Image src={project.thumbnail} alt={project.title} fill sizes="(max-width: 1100px) 100vw, 1100px" className="object-cover" priority />
+          <Image src={project.thumbnail} alt={project.title} fill sizes="(max-width: 1100px) 100vw, 1100px" className="object-cover object-top" priority />
         </div>
       </div>
 
@@ -109,11 +110,30 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           <div>
             <h2 className="mb-6 text-xs font-semibold uppercase tracking-[0.1em] text-theme-fg-dim">SCREENSHOTS</h2>
             <div className="grid gap-4 sm:grid-cols-2">
-              {project.images.map((src, i) => (
-                <div key={i} className="relative aspect-video overflow-hidden rounded-2xl" style={{ border: '1px solid var(--color-border)' }}>
-                  <Image src={src} alt={project.title + ' screenshot ' + (i+1)} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
-                </div>
-              ))}
+              {project.images.map((src, i) => {
+                const size = getImageSize(src);
+                const portrait = size ? size.height > size.width : false;
+                return (
+                  <div
+                    key={src}
+                    className={
+                      portrait
+                        ? 'relative mx-auto aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-2xl'
+                        : 'relative aspect-video overflow-hidden rounded-2xl'
+                    }
+                    style={{ border: '1px solid var(--color-border)', background: 'var(--color-bg-elevated)' }}
+                  >
+                    {/* Frame follows the capture: phone portraits get a tall tile, desktop shots stay 16:9 */}
+                    <Image
+                      src={src}
+                      alt={`${project.title} screenshot ${i + 1}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-contain"
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

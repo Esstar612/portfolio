@@ -19,8 +19,8 @@ const contactLinks = [
 
 export default function ContactPage() {
   return (
-    <div className="page-enter pt-28 md:pt-32">
-      <Section divider>
+    <div className="page-enter pt-20 md:pt-24">
+      <Section divider className="pt-6 md:pt-8">
         <div className="mx-auto max-w-2xl">
           <h1 className="font-display text-[2.5rem] font-normal tracking-tight text-theme-fg">
             Let&apos;s <em className="text-theme-accent-soft">connect</em>.
@@ -35,15 +35,12 @@ export default function ContactPage() {
               <a
                 key={link.label}
                 href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 rounded-2xl p-4 transition-all duration-300 hover:-translate-y-0.5"
-                style={{
-                  border: '1px solid var(--color-border)',
-                  background: 'var(--color-bg-card)',
-                }}
+                {...(link.href.startsWith('mailto:')
+                  ? {}
+                  : { target: '_blank', rel: 'noopener noreferrer' })}
+                className="card-surface flex items-center gap-4 rounded-2xl p-4 hover:-translate-y-0.5"
               >
-                <link.icon className="h-5 w-5 text-theme-accent" />
+                <link.icon className="h-5 w-5 text-theme-accent" aria-hidden />
                 <div>
                   <p className="text-sm font-medium text-theme-fg">{link.label}</p>
                   <p className="text-sm text-theme-fg-muted">{link.value}</p>

@@ -3,8 +3,14 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
+const fields = [
+  { name: 'name', label: 'Your name', type: 'text', autoComplete: 'name' },
+  { name: 'email', label: 'Your email', type: 'email', autoComplete: 'email' },
+] as const;
+
 export function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [error, setError] = useState('Something went wrong. Try emailing me directly.');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -20,8 +26,15 @@ export function ContactForm() {
           message: formData.get('message'),
         }),
       });
-      setStatus(res.ok ? 'sent' : 'error');
+      if (res.ok) {
+        setStatus('sent');
+        return;
+      }
+      const data = await res.json().catch(() => null);
+      setError(data?.error || 'Something went wrong. Try emailing me directly.');
+      setStatus('error');
     } catch {
+      setError('Something went wrong. Try emailing me directly.');
       setStatus('error');
     }
   }
@@ -37,41 +50,52 @@ export function ContactForm() {
 
   const inputStyles =
     'w-full rounded-xl px-4 py-3 text-sm font-body transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-theme-accent';
+  const inputStyle = {
+    background: 'var(--color-bg-elevated)',
+    border: '1px solid var(--color-border)',
+    color: 'var(--color-fg)',
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {['name', 'email'].map((field) => (
-        <input
-          key={field}
-          name={field}
-          type={field === 'email' ? 'email' : 'text'}
-          placeholder={field === 'name' ? 'Your name' : 'Your email'}
-          required
-          className={inputStyles}
-          style={{
-            background: 'var(--color-bg-elevated)',
-            border: '1px solid var(--color-border)',
-            color: 'var(--color-fg)',
-          }}
-        />
+      {fields.map((field) => (
+        <div key={field.name}>
+          <label htmlFor={`contact-${field.name}`} className="sr-only">
+            {field.label}
+          </label>
+          <input
+            id={`contact-${field.name}`}
+            name={field.name}
+            type={field.type}
+            autoComplete={field.autoComplete}
+            placeholder={field.label}
+            required
+            className={inputStyles}
+            style={inputStyle}
+          />
+        </div>
       ))}
-      <textarea
-        name="message"
-        rows={5}
-        placeholder="Your message"
-        required
-        className={inputStyles + ' resize-none'}
-        style={{
-          background: 'var(--color-bg-elevated)',
-          border: '1px solid var(--color-border)',
-          color: 'var(--color-fg)',
-        }}
-      />
+      <div>
+        <label htmlFor="contact-message" className="sr-only">
+          Your message
+        </label>
+        <textarea
+          id="contact-message"
+          name="message"
+          rows={5}
+          placeholder="Your message"
+          required
+          className={inputStyles + ' resize-none'}
+          style={inputStyle}
+        />
+      </div>
       <Button type="submit" disabled={status === 'sending'}>
         {status === 'sending' ? 'Sending...' : 'Send Message'}
       </Button>
       {status === 'error' && (
-        <p className="text-sm text-red-500">Something went wrong. Try emailing me directly.</p>
+        <p role="alert" className="text-sm text-red-500">
+          {error}
+        </p>
       )}
     </form>
   );

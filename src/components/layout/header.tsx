@@ -30,12 +30,12 @@ export function Header() {
         <div className="hidden items-center gap-6 md:flex">
           {siteConfig.nav.map((link) => {
             const isActive =
-              pathname === link.href ||
-              (link.href !== '/' && pathname.startsWith(link.href));
+              pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={isActive ? 'page' : undefined}
                 className={cn(
                   'text-[0.8rem] font-medium uppercase tracking-[0.06em] transition-colors',
                   isActive ? 'text-theme-fg' : 'text-theme-fg-muted hover:text-theme-fg'
@@ -83,7 +83,11 @@ export function Header() {
               key={link.href}
               href={link.href}
               onClick={() => setMobileOpen(false)}
-              className="block px-3 py-2.5 text-sm font-medium text-theme-fg-muted transition-colors hover:text-theme-fg"
+              aria-current={pathname === link.href ? 'page' : undefined}
+              className={cn(
+                'block px-3 py-2.5 text-sm font-medium transition-colors hover:text-theme-fg',
+                pathname === link.href ? 'text-theme-fg' : 'text-theme-fg-muted'
+              )}
             >
               {link.label}
             </Link>

@@ -14,8 +14,8 @@ export const metadata: Metadata = createMetadata({
 
 export default function ProjectsPage() {
   return (
-    <div className="page-enter pt-28 md:pt-32">
-      <Section divider>
+    <div className="page-enter pt-20 md:pt-24">
+      <Section divider className="pt-6 md:pt-8">
         <div className="mb-12 flex items-baseline justify-between md:mb-16">
           <h2 className="font-display text-[2.5rem] font-normal tracking-tight text-theme-fg">
             All <em className="text-theme-accent-soft">Projects</em>
@@ -30,9 +30,7 @@ export default function ProjectsPage() {
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           {projects.map((project) => (
-            <div key={project.slug}>
-              <ProjectCard project={project} />
-            </div>
+            <ProjectCard key={project.slug} project={project} />
           ))}
         </div>
       </Section>

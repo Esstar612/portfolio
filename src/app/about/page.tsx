@@ -32,8 +32,8 @@ const timeline = [
 
 export default function AboutPage() {
   return (
-    <div className="page-enter pt-28 md:pt-32">
-      <Section divider>
+    <div className="page-enter pt-20 md:pt-24">
+      <Section divider className="pt-6 md:pt-8">
         <div className="mx-auto max-w-3xl">
           <h1 className="font-display text-[2.5rem] font-normal tracking-tight text-theme-fg md:text-[3rem]">
             About <em className="text-theme-accent-soft">Me</em>

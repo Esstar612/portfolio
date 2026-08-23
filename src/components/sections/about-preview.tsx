@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Section } from '@/components/ui/section';
+import { projects } from '@/data/projects';
 
 export function AboutPreview() {
   return (
@@ -31,7 +32,7 @@ export function AboutPreview() {
         {/* Right — stats */}
         <div className="grid grid-cols-3 gap-4">
           {[
-            { value: '5', label: 'Projects' },
+            { value: String(projects.length), label: 'Projects' },
             { value: '3.1K', label: 'GH Stars' },
             { value: '246K', label: 'Downloads' },
           ].map((stat) => (

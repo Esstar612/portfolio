@@ -20,23 +20,11 @@ export function FeaturedProjects() {
         </Link>
       </div>
 
-      {/* 2-col grid */}
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        {featured[0] && (
-          <div>
-            <ProjectCard project={featured[0]} />
-          </div>
-        )}
-        {featured[1] && (
-          <div>
-            <ProjectCard project={featured[1]} />
-          </div>
-        )}
-        {featured[2] && (
-          <div>
-            <ProjectCard project={featured[2]} />
-          </div>
-        )}
+      {/* 3-up so the three featured cards fill the row evenly */}
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+        {featured.map((project) => (
+          <ProjectCard key={project.slug} project={project} />
+        ))}
       </div>
     </Section>
   );

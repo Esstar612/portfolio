@@ -67,6 +67,31 @@
 }
 
 /* ============================================
+   Components — shared hover treatments
+   (CSS-only so cards/chips stay server-rendered)
+   ============================================ */
+@layer components {
+  .card-surface {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+  }
+  .card-surface:hover {
+    border-color: var(--color-border-hover);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 40px var(--accent-glow);
+  }
+
+  .chip {
+    border: 1px solid var(--color-border);
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  }
+  .chip:hover {
+    border-color: var(--color-accent);
+    background-color: var(--accent-glow);
+  }
+}
+
+/* ============================================
    Utilities
    ============================================ */
 @layer utilities {
@@ -90,4 +115,24 @@
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(20px) }
   to { opacity: 1; transform: translateY(0) }
+}
+
+/* ============================================
+   Reduced motion — keep content visible
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto }
+
+  .animate-stagger > *,
+  .page-enter {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

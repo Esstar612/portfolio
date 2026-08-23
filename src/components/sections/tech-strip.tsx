@@ -1,5 +1,3 @@
-'use client';
-
 import { techStack } from '@/data/tech-stack';
 
 export function TechStrip() {
@@ -20,20 +18,7 @@ export function TechStrip() {
         {techStack.map((tech) => (
           <span
             key={tech.name}
-            className="rounded-full px-4 py-2 text-[0.78rem] font-normal text-theme-fg-muted transition-all duration-300 hover:text-theme-accent"
-            style={{
-              border: '1px solid var(--color-border)',
-            }}
-            onMouseEnter={(e) => {
-              const el = e.currentTarget;
-              el.style.borderColor = 'var(--color-accent)';
-              el.style.background = 'var(--accent-glow)';
-            }}
-            onMouseLeave={(e) => {
-              const el = e.currentTarget;
-              el.style.borderColor = 'var(--color-border)';
-              el.style.background = 'transparent';
-            }}
+            className="chip rounded-full px-4 py-2 text-[0.78rem] font-normal text-theme-fg-muted hover:text-theme-accent"
           >
             {tech.name}
           </span>
