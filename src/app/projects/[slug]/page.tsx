@@ -133,7 +133,10 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                       src={src}
                       alt={`${project.title} screenshot ${i + 1}`}
                       fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      // Two ~380px columns inside a max-w-3xl container — "50vw"
+                      // overstated it badly and pulled the 1920px variant for a
+                      // tile that never renders wider than 380 CSS px.
+                      sizes="(max-width: 640px) 100vw, 380px"
                       className="object-contain"
                     />
                   </div>
