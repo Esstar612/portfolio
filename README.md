@@ -43,8 +43,8 @@ resolved before paint.
 
 | Project | What it is | Stack |
 |---|---|---|
-| [The Newspaper](https://newspaper-kohl.vercel.app) | News aggregator pulling ~400 articles/day from 7+ sources, with weather and stock dashboards — running at $0/month | Next.js, MongoDB Atlas, Vercel Cron, Recharts |
-| [Favorite Places](https://appetize.io/app/b_3ngeiuwtjjg7qmxhieybnpzq4u) | AI-powered mobile app for saving and organizing locations | Flutter, Dart, Firebase |
+| [The Newspaper](https://newspaper-kohl.vercel.app) | Editorial news front page reading ~400 articles/day from NYT and BBC RSS, with markets and weather dashboards — running at $0/month | Next.js, MongoDB Atlas, Vercel Cron, Recharts |
+| [Favorite Places](https://favorite-places-app-94adb.web.app) | Cross-platform app for saving places, with Gemini summaries and search-by-meaning ([Android build](https://appetize.io/app/b_3ngeiuwtjjg7qmxhieybnpzq4u)) | Flutter, Dart, Firebase, Cloud Run |
 | [Upstate Underdog Rescue](https://upstateunderdog.weebly.com/) | Site for a dog rescue nonprofit | Web |
 | [BORED?](https://esstar612.github.io/bored/) | Activity discovery app | JavaScript |
 | [Magic Grid](https://github.com/e-oj/Magic-Grid) | Open source contributions to a 3.1K-star, 246K-download layout library; led its React port | JavaScript, React |

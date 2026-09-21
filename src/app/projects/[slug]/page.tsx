@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, ArrowUpRight, Github } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, Github, Smartphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tag } from '@/components/ui/tag';
 import { Section } from '@/components/ui/section';
@@ -46,6 +46,11 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         <div className="mt-8 flex flex-wrap gap-3">
           {project.links.live && (
             <Button href={project.links.live} external>Live Demo <ArrowUpRight className="h-4 w-4" /></Button>
+          )}
+          {project.links.androidDemo && (
+            <Button href={project.links.androidDemo} variant="secondary" external>
+              <Smartphone className="h-4 w-4" /> Android Demo
+            </Button>
           )}
           {project.links.github && (
             <Button href={project.links.github} variant="secondary" external><Github className="h-4 w-4" /> View Source</Button>

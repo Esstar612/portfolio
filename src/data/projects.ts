@@ -14,6 +14,8 @@ export interface Project {
   year: string;
   links: {
     live?: string;
+    /** Secondary runnable build — e.g. an emulator hosting an Android APK. */
+    androidDemo?: string;
     github?: string;
     caseStudy?: string;
   };
@@ -36,11 +38,11 @@ export const projects: Project[] = [
   {
     slug: 'the-newspaper',
     title: 'The Newspaper',
-    tagline: 'Full-stack news aggregation platform with real-time weather and stock data.',
+    tagline: 'An editorial front page for news, markets and weather — built to survive its own data providers.',
     description:
-      'A modern news aggregation platform pulling from 7+ sources via NewsAPI and NYT API, with interactive weather dashboards, stock market tracking, and automated data pipelines — all running at $0/month.',
-    tags: ['Next.js', 'TypeScript', 'MongoDB', 'Recharts', 'Vercel', 'React'],
-    thumbnail: '/images/projects/newspaper/thumbnail.png',
+      'A news platform that reads eleven per-section NYT and BBC RSS feeds daily, pairs them with a markets watchlist and a weather dashboard, and is engineered so a dead feed or a blocked API degrades visibly instead of quietly emptying the site — all inside free tiers at $0/month.',
+    tags: ['Next.js', 'TypeScript', 'MongoDB', 'RSS', 'Recharts', 'Vercel', 'React'],
+    thumbnail: '/images/projects/newspaper/front-page.jpg',
     featured: true,
     year: '2026',
     links: {
@@ -48,73 +50,77 @@ export const projects: Project[] = [
       github: 'https://github.com/Esstar612/newspaper',
     },
     problem:
-      'Staying informed across multiple news sources, weather conditions, and financial markets requires jumping between fragmented apps and websites. Free-tier API constraints make building unified dashboards challenging — most aggregators either hit rate limits or rack up infrastructure costs that kill personal projects.',
+      'Staying informed means moving between a news site, a markets app and a weather app. Building one place that does all three sounds simple until the data providers get in the way. NewsAPI\'s free tier rejects requests from deployed origins, so it contributed nothing in production while appearing to work locally. The NYT API allows five requests a minute and answers overflow with HTTP 200 and a fault body, so failures were indistinguishable from empty results. The market data provider permits one active IP per account and states that serverless platforms are unsupported — which is exactly what this runs on.',
     solution:
-      'The Newspaper aggregates real-time news from NewsAPI and the New York Times API across 6 categories (~400 articles/day), pairs it with an interactive weather dashboard featuring geolocation and data visualizations, and adds live stock market data with multi-currency conversion. Automated cron jobs handle daily ingestion and cleanup with zero manual maintenance.',
+      'The Newspaper reads eleven per-section RSS feeds from the New York Times and the BBC: keyless, unmetered, and where the feed requested is the category, so nothing has to be inferred. Roughly 450 articles arrive daily and deduplicate to ~400 unique, laid out as a front page — a lead story, a feature grid, then an "In brief" column set — rather than a uniform grid of cards. The markets page serves its price chart from MongoDB instead of a live API, so it keeps working through provider outages, and the weather dashboard adds Recharts visualisations over OpenWeatherMap. Full-text search, cursor-based pagination, and light and dark themes throughout.',
     architecture: {
-      frontend: 'Next.js 16 with App Router and React Server Components. TypeScript for type safety throughout. Recharts for interactive data visualizations including temperature bar charts, humidity line graphs, and weather distribution pie charts. Tailwind CSS for responsive utility-first styling.',
-      backend: 'Next.js API Routes as serverless functions. Vercel Cron Jobs for automated daily news ingestion (midnight UTC) and database cleanup (3 AM UTC). Smart deduplication via upsert writes prevents duplicate articles across sources.',
-      database: 'MongoDB Atlas with Mongoose ODM. Unique indexes on article URLs for deduplication. Composite indexes on source + publishedAt for efficient filtered queries. 7-day rolling retention keeps the database at ~14MB and ~14K articles max.',
-      infrastructure: 'Deployed on Vercel with automatic builds from GitHub. MongoDB Atlas free tier for cloud database. All APIs (NewsAPI, NYT, OpenWeatherMap, Market Data) used within free-tier limits. Total monthly cost: $0.',
+      frontend: 'Next.js 16 with the App Router and React Server Components, TypeScript throughout, Tailwind CSS on a real type scale. Newsreader for serif headlines over Geist for the sans UI, with three article weights — lead, feature, and a compact "In brief" set — so a page reads as a front page rather than a grid. Every colour routed through CSS custom properties, with light and dark themes that follow the OS by default and remember an explicit choice. All text clears WCAG AA contrast in both themes; tabs are keyboard-navigable, focus rings visible, and prefers-reduced-motion is respected. Recharts for the weather and price visualisations.',
+      backend: 'Next.js API Routes as serverless functions. Three daily Vercel cron jobs: RSS ingestion at 00:00 UTC, which fetches eleven feeds in parallel and returns per-feed counts so a dead feed is visible rather than silently empty; price-history refresh at 02:00 UTC, deliberately sequential so all ten calls leave one invocation on one outbound IP; and a guarded retention cleanup at 03:00 UTC. Quotes are cached at three levels — a five-minute server-side route cache matching the provider\'s block window, a localStorage cache shared by the front-page ticker and the watchlist, and a stale-payload fallback that shows last known prices during an outage.',
+      database: 'MongoDB Atlas with Mongoose. Articles carry a tags array of every section they were ingested under, so a story appearing in two feeds keeps both instead of one overwriting the other. Unique index on url for deduplication, plus compound indexes on publishedAt, source + publishedAt, and tags + publishedAt — the last of which the category tabs would otherwise scan the whole collection for. A CandleSeries document per symbol holds about 250 daily closes, so 1M/3M/6M/1Y are slices of one document rather than four separate lookups.',
+      infrastructure: 'Vercel with automatic builds from GitHub and three cron schedules declared in vercel.json. MongoDB Atlas free tier. NYT and BBC RSS (keyless, unmetered), OpenWeatherMap for weather, forecast and both forward and reverse geocoding, Market Data for quotes and daily candles, Frankfurter for currency conversion. Every service stays inside its free allowance: bulk quotes bill at zero credits, and the five-minute cache caps upstream requests regardless of traffic. Total monthly cost: $0.',
     },
     highlights: [
-      'Engineered a reusable automated data pipeline using Vercel Cron Jobs for daily ingestion with smart deduplication and 7-day rolling retention — zero manual maintenance',
-      'Designed interactive weather visualizations (bar, line, pie charts) with geolocation support and city autocomplete using Recharts',
-      'Optimized MongoDB indexing strategies to achieve fast queries across ~400 articles/day while staying within free-tier constraints',
-      'Architected the entire platform to run at $0/month by strategically balancing performance with free-tier API and infrastructure limits',
+      'Replaced a news-API pipeline with eleven per-section RSS feeds after the API version proved unfixable in production — NewsAPI rejects deployed origins, and the NYT API returns rate-limit failures as HTTP 200 — gaining a keyless, unmetered source where the feed requested is the category',
+      'Moved stock price history into MongoDB behind a daily sequential cron, so ten upstream calls leave one serverless invocation on one IP, satisfying a provider that permits one active IP and does not support serverless — every chart read is then a local database query',
+      'Built retention cleanup that can refuse to run: it holds if nothing has been ingested for 48 hours and never drops below a 120-article floor, because cron delivery is best-effort and a naive age cutoff would empty the database within a week of ingestion breaking',
+      'Implemented compound-cursor pagination over publishedAt + _id so ties at a page boundary neither skip nor repeat articles, with full-text search scoped to the active section and section state held in the URL so a refresh or shared link lands in the same place',
+      'Shipped light and dark themes on CSS custom properties with all text clearing WCAG AA contrast in both, keyboard-navigable tabs, visible focus rings, and prefers-reduced-motion support',
     ],
     challenges:
-      'The biggest challenge was designing the data pipeline to be both reliable and extensible while respecting free-tier rate limits. NewsAPI allows only 100 requests/day and NYT caps at 500, so every API call needed to count. I built the ingestion pipeline with upsert logic that gracefully handles duplicates and partial failures — if one source times out, the others still process. Adding a new source only requires implementing a simple adapter function. Balancing MongoDB query performance with the free-tier 512MB storage limit required careful index design and the 7-day retention policy.',
+      'Almost every interesting decision here came from a provider constraint rather than a preference. The original build used NewsAPI and the NYT Top Stories API, and both failed in ways that looked like success: NewsAPI silently returned nothing from a deployed origin, and the NYT API answered rate-limit overflow with HTTP 200 and a fault body. Per-section RSS fixed both and removed the category-guessing the API version had needed. The market data provider was the opposite problem — one active IP per account and serverless explicitly unsupported — so fetching history per request meant forty upstream calls from scattered IPs. Storing a year of closes in MongoDB behind one daily sequential cron cut that to ten calls from one IP and made the chart immune to provider outages. The subtlest issue was retention: cleanup and ingestion are separate best-effort jobs, so cleanup had to be able to decide not to run at all.',
     results:
-      'Live in production serving ~400 fresh articles daily across 6 categories. Weather dashboard supports global location search with 5-day forecasts. Stock tracker covers major symbols with real-time pricing. Entire platform runs on $0/month infrastructure.',
+      'Live in production with ~400 unique articles a day across seven sections, a ten-symbol watchlist with conversion into 30+ currencies, and a five-day weather dashboard with geolocation. When the quote provider blocks a request the page degrades to last known prices and says so, while the price chart keeps working because its data is local. Runs entirely inside free tiers at $0/month.',
     images: [
-      '/images/projects/newspaper/news-page.png',
-      '/images/projects/newspaper/stocks-page.png',
-      '/images/projects/newspaper/weather-page.png',
-      '/images/projects/newspaper/thumbnail.png',
+      '/images/projects/newspaper/front-page.jpg',
+      '/images/projects/newspaper/news-page.jpg',
+      '/images/projects/newspaper/stocks-page.jpg',
+      '/images/projects/newspaper/weather-page.jpg',
     ],
   },
   {
     slug: 'favorite-places',
     title: 'Favorite Places',
-    tagline: 'AI-powered mobile app for saving and organizing your favorite locations.',
+    tagline: 'Cross-platform app for saving places, with AI that summarises your notes and searches by meaning.',
     description:
-      'A full-stack cross-platform mobile application built with Flutter and Firebase, featuring Google Gemini AI for intelligent tag suggestions and content summarization, Google Maps integration, and a serverless Node.js backend on Cloud Run.',
-    tags: ['Flutter', 'Firebase', 'Node.js', 'Google Gemini AI', 'Cloud Run', 'Dart'],
-    thumbnail: '/images/projects/favorite-places/thumbnail-mockup.png',
+      'One Flutter codebase shipping to Android and the browser, backed by an Express API on Cloud Run and Firebase. Google Gemini turns freeform notes into structured summaries, suggests tags from a place\'s photo, and answers natural-language searches like "somewhere quiet to work". Try it as a guest — no sign-up — in a private sandbox pre-loaded with sample places.',
+    tags: ['Flutter', 'Dart', 'Firebase', 'Google Gemini AI', 'Node.js', 'Cloud Run'],
+    thumbnail: '/images/projects/favorite-places/thumbnail-mockup.jpg',
     featured: true,
     year: '2026',
     links: {
-      live: 'https://appetize.io/app/b_3ngeiuwtjjg7qmxhieybnpzq4u',
+      live: 'https://favorite-places-app-94adb.web.app',
+      androidDemo: 'https://appetize.io/app/b_3ngeiuwtjjg7qmxhieybnpzq4u',
       github: 'https://github.com/Esstar612/FavoritePlaces',
     },
     problem:
-      'People visit memorable places but lack a personal, organized way to catalog them with context — photos, notes, ratings, and location data end up scattered across camera rolls, note apps, and map bookmarks. Existing solutions don\'t offer intelligent organization or help users rediscover what made a place special.',
+      'People visit places worth remembering and end up with the context scattered — photos in the camera roll, notes in a notes app, the location bookmarked somewhere else. What you actually want back months later is not the address but why you liked it, and nobody writes that down in a form they can retrieve. Keyword search does not help either: search "art" across your own saved places and you match T-art-ine Bakery long before you find the museum.',
     solution:
-      'Favorite Places lets users save locations with rich metadata — multiple photos, custom categories, ratings, and detailed notes. Google Gemini AI analyzes context to suggest relevant tags and generate intelligent summaries with visit tips. Google Maps integration provides an interactive location picker with address geocoding, and real-time Firebase sync keeps data consistent across devices.',
+      'Favorite Places stores places with photos, notes, ratings, tags and categories, synced live through Firestore. Gemini does the retrieval work keyword search cannot: Smart Summary rewrites raw notes into why you liked it, tips, and best time to go; tag suggestions come from the place name and category, plus Cloud Vision analysis when a photo exists; and natural-language search matches on meaning, so "art" returns SFMOMA rather than Tartine. One Flutter codebase ships to Android and the web, and guest mode gives any visitor an isolated sandbox seeded with sample places — no sign-up, no email.',
     architecture: {
-      frontend: 'Flutter 3.27+ with Dart 3.6+. Riverpod for reactive, scalable state management. Google Maps Flutter plugin with geocoding for interactive location selection. Material Design 3 with custom theming and dark mode support.',
-      backend: 'Node.js 20 with Express.js running on Google Cloud Run (serverless, auto-scaling). Google Gemini 1.5 Flash for AI features (tag suggestions, note summarization). Firebase Admin SDK for token verification. Helmet, CORS, rate limiting, and input validation for security.',
-      database: 'Cloud Firestore for real-time NoSQL data sync with offline-first capabilities. Firebase Storage for photo uploads. Firestore security rules enforce user data isolation. All data syncs in real-time across devices.',
-      infrastructure: 'Google Cloud Run for serverless backend deployment with Docker. Firebase suite (Auth, Firestore, Storage) for mobile infrastructure. Google Secret Manager for API keys. GitHub Actions CI/CD pipeline with automated Appetize.io deployment. Total cost: $0/month on free tiers.',
+      frontend: 'Flutter 3.38 and Dart 3.10 with Riverpod for state and Material 3, shipping to Android and the browser from one codebase. Cloud Firestore snapshot listeners keep data live. Google Maps for the picker, with Places autocomplete and an initial camera on the user\'s location. Places with no photo fall back to a static map of where they are rather than a grey placeholder. Light and dark themes persisted per account. 25 unit tests cover model parsing, cached-summary invalidation, and the display helpers that once crashed the profile screen on an empty display name.',
+      backend: 'Node.js 20 on Express, deployed to Cloud Run as an Alpine container. It exists for more than proxying the model: it verifies a Firebase ID token on every /ai, /user and /maps route, rate-limits per IP with trust proxy set so Cloud Run\'s load balancer does not collapse every caller into one bucket, and holds the Gemini and Geocoding keys server-side — the Geocoding API rejects HTTP-referrer-restricted keys outright, so a browser cannot call it safely at all. Helmet headers, a CORS allowlist, input validation and payload caps.',
+      database: 'Cloud Firestore for places, profiles, settings and stats, with Firebase Storage for photos and a composite index backing the places query. Security rules are versioned in the repo and scope every document and file to its owner — including on create, so a place cannot be written under someone else\'s ID. Guest accounts get an isolated sandbox seeded with sample places and deleted on sign-out. Any user can export everything as JSON or delete the account and all its data.',
+      infrastructure: 'GitHub Actions builds and deploys the web app to Firebase Hosting and the Android APK to Appetize on every push to main, running the Flutter tests first. Cloud Run for the API, Secret Manager for keys. Four separate Google Maps keys, because a Google API key carries only one application restriction and the app calls Maps from four surfaces with different identities. Everything sits inside free tiers.',
     },
     highlights: [
-      'Integrated Google Gemini 1.5 Flash AI for intelligent tag suggestions and content summarization — analyzing photos and context to generate relevant metadata',
-      'Implemented serverless backend on Cloud Run with Firebase Admin SDK, designing clean service abstractions for authentication, rate limiting (100 req/15 min), and real-time photo storage',
-      'Built interactive Google Maps integration with address geocoding, geolocation support, and a favorites filtering system with custom categories',
-      'Automated CI/CD pipeline via GitHub Actions with browser-based testing on Appetize.io — achieved $0/month operational costs through strategic free-tier architecture',
+      'Built natural-language search on Gemini that matches meaning rather than substrings — the query "art" returns SFMOMA instead of T-art-ine Bakery — alongside Smart Summaries that turn freeform notes into why I liked it, tips and best time to go, cached so revisiting a place does not re-run the model',
+      'Shipped one Flutter codebase to Android and the browser, with a guest mode that hands any visitor a private sandbox seeded with sample places, making the web build a demo anyone can try without an account',
+      'Designed the Cloud Run backend around key custody rather than convenience: Gemini and Geocoding keys never reach a client, and the client-side Maps keys are each scoped to a single surface because a Google key carries only one application restriction',
+      'Wrote Firestore and Storage rules that scope every document and file to its owner including on create, and shipped JSON data export plus full account deletion alongside them',
+      'Automated CI/CD through GitHub Actions — web to Firebase Hosting, APK to Appetize on every push to main — gated by 25 Flutter unit tests, all inside free tiers at $0/month',
     ],
     challenges:
-      'The primary challenge was designing the AI integration to feel useful without being intrusive. Gemini API calls needed to be fast enough for inline suggestions but not so aggressive that they burned through rate limits. I implemented a debounced request pattern that batches context (place name, notes, category, photo metadata) into a single API call, with client-side caching to avoid redundant requests. Another challenge was maintaining responsive UI during photo uploads to Firebase Storage — I used optimistic UI updates with background upload queues so users never wait on network operations.',
+      'The API key model was the most unexpected constraint. A Google API key can carry only one application restriction, and this app calls Maps from four places with different identities: the Android SDK, the web build, REST calls from the phone, and server-side geocoding. That forced four separately scoped keys — and the mobile REST key is the one that genuinely cannot be locked to an application, because REST calls from a phone carry neither a package identity nor a referrer for a key to be restricted against, so it is limited by API and quota cap instead. Choosing a demo surface was the other trade-off. Appetize\'s free tier caps sessions at three minutes with one viewer at a time, and its emulated device cannot run the Google Maps SDK, so "Select on Map" fails there. The web build became the primary demo and the Android build stayed on as a secondary link.',
     results:
-      'Shipped and live on Appetize.io for browser-based testing. Full CRUD with real-time sync, AI-powered features, secure authentication (email + Google Sign-In), and a statistics dashboard. Runs entirely on free-tier infrastructure at $0/month.',
+      'Live on Firebase Hosting with a no-sign-up guest demo, plus the Android build on Appetize. Full CRUD with live Firestore sync, three Gemini-backed AI features, email/Google/guest auth, per-account themes, JSON export and account deletion. 25 unit tests run in CI before every deploy. Runs inside free tiers at $0/month.',
     images: [
-      '/images/projects/favorite-places/places-list.png',
-      '/images/projects/favorite-places/place-detail-ai.png',
-      '/images/projects/favorite-places/map-view.png',
-      '/images/projects/favorite-places/add-place.png',
-      '/images/projects/favorite-places/profile.png',
-      '/images/projects/favorite-places/place-detail.png',
+      '/images/projects/favorite-places/places-list.jpg',
+      '/images/projects/favorite-places/ai-search.jpg',
+      '/images/projects/favorite-places/place-detail.jpg',
+      '/images/projects/favorite-places/place-detail-ai.jpg',
+      '/images/projects/favorite-places/add-place.jpg',
+      '/images/projects/favorite-places/map-picker.jpg',
+      '/images/projects/favorite-places/profile.jpg',
     ],
   },
   {
