@@ -4,7 +4,7 @@ import { ProjectCard } from '@/components/ui/project-card';
 import { getFeaturedProjects } from '@/data/projects';
 
 export function FeaturedProjects() {
-  const featured = getFeaturedProjects().slice(0, 3);
+  const featured = getFeaturedProjects().slice(0, 4);
 
   return (
     <Section divider>
@@ -20,8 +20,8 @@ export function FeaturedProjects() {
         </Link>
       </div>
 
-      {/* 3-up so the three featured cards fill the row evenly */}
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+      {/* 2-up, matching the projects index, so four featured cards fill two even rows */}
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
         {featured.map((project) => (
           <ProjectCard key={project.slug} project={project} />
         ))}

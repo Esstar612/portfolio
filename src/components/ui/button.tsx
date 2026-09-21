@@ -51,11 +51,17 @@ export function Button({
   );
 
   if (href) {
-    const linkProps = external
-      ? { target: '_blank' as const, rel: 'noopener noreferrer' }
-      : {};
+    // External targets bypass the router: some are other origins, and some are
+    // static files under /public that have no route for Next to prefetch.
+    if (external) {
+      return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={styles}>
+          {children}
+        </a>
+      );
+    }
     return (
-      <Link href={href} className={styles} {...linkProps}>
+      <Link href={href} className={styles}>
         {children}
       </Link>
     );

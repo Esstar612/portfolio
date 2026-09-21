@@ -22,12 +22,13 @@ export interface Project {
   // Case study fields
   problem: string;
   solution: string;
-  architecture: {
-    frontend: string;
-    backend: string;
-    database: string;
-    infrastructure: string;
-  };
+  /**
+   * Named layers of the build, rendered as a card grid on the case study.
+   * Most projects use frontend / backend / database / infrastructure, but the
+   * keys are free-form so a consulting engagement can name its own layers —
+   * the heading is the key, title-cased.
+   */
+  architecture: Record<string, string>;
   highlights: string[];
   challenges: string;
   results: string;
@@ -162,6 +163,61 @@ export const projects: Project[] = [
       '/images/projects/uur/donate.png',
       '/images/projects/uur/events.png',
       '/images/projects/uur/get-involved.png',
+    ],
+  },
+  {
+    slug: 'cathedral-of-all-saints',
+    title: 'Cathedral of All Saints',
+    tagline:
+      'Technical liaison and website lead on a six-person IT modernization of the first Episcopal cathedral in the United States.',
+    description:
+      'An RPI IT capstone engagement with a working Albany parish whose technology had grown ad hoc for years. I ran the technical requirements conversations with the Cathedral and turned what they wanted into workstreams the team could build, directed the visual design, modelled the system in UML, built the site and CMS, and wrote the cost-benefit analysis and phased roadmap the recommendation rests on.',
+    tags: ['HTML/CSS', 'JavaScript', 'Squarespace', 'CMS', 'UML', 'Requirements Analysis', 'Information Architecture', 'Cost-Benefit Analysis'],
+    thumbnail: '/images/projects/cathedral/showcase.jpg',
+    featured: true,
+    year: '2026',
+    links: {
+      live: '/cathedral-demo/showcase.html',
+    },
+    problem:
+      'The Cathedral of All Saints is the first Episcopal cathedral in the United States and a working parish running ESL classes, AA meetings and a Loaves & Fishes partnership out of a National Register building in Albany. Its technology had grown ad hoc rather than by design: a Verizon mobile hotspot carried the worship livestream, files lived across two personal Dropbox accounts, Google Drive and individual staff computers, and online giving ran through four platforms that did not talk to each other. The website was the most visible symptom — ten top-level navigation headings, a homepage that was one long scroll, giving content scattered across three unrelated sections, and more than forty abandoned unlinked pages in the backend. Asked what the single most important thing a visitor should be able to do, the client answered without hesitation: find the upcoming events. The site made that unnecessarily hard. Five employees, two interns, no technical staff, and a governing Great Chapter whose approval every significant expenditure requires.',
+    solution:
+      'The team assessed six areas and delivered a phased modernization plan. I was the technical liaison to the Cathedral: I ran the requirements conversations with their staff, worked out what they actually wanted built, and translated that into the workstreams and task division the team worked to. From there I directed the visual design — reviewing each iteration of the high-fidelity mockups with the client and specifying the changes back to the designer generating them — modelled the system in UML, built the site and CMS, and wrote the financial case. The recommendation that mattered most was a negative one — not to migrate. WordPress powers roughly 43% of the web and offered a far larger plugin ecosystem, but it would have handed a five-person non-technical staff responsibility for plugin updates, security patching and hosting, and discarded the one administrator\'s existing Squarespace fluency. Staying put meant the redesign could be maintained from the day we left. The site was restructured from ten top-level headings to five, with all six scattered giving destinations consolidated onto a single Give page, a four-link action navbar sitting over a full-screen overlay menu, and a sticky mobile bottom bar injected below 768 pixels. Alongside the Squarespace build I hand-coded a nine-page high-fidelity prototype and a showcase viewer, so the client and the Great Chapter could see and click the entire design system before committing a dollar.',
+    architecture: {
+      requirements:
+        'A structured discovery questionnaire across all six project areas, then the technical conversations with Cathedral staff that turned vague dissatisfaction into buildable scope. The single most useful answer came from asking what one thing a visitor should be able to do — "find the upcoming events" — which became the constraint the whole navigation was designed against. Findings were relayed back to the team as a week-by-week delivery plan — who was doing what across each of the four build weeks, and what each week had to ship — and the client\'s four reference sites were analysed for what to borrow: Trinity Church Wall Street\'s split between quick-access actions and a full overlay menu is the pattern the redesign adopts.',
+      'system modelling':
+        'A software design and engineering package defining four use cases — marketing-campaign document access, viewing upcoming events, updating the seasonal schedule, and setting up event ticketing — with "View Upcoming Events" specified in short form down to its alternative flows, including what the page shows when no events exist. Five UML diagrams model the system: use case, activity with swim lanes across user, browser and server, sequence, component and deployment. Written in February against a WordPress stack, which the assessment work later overturned in favour of staying on Squarespace — the models held, the platform underneath them did not.',
+      prototype:
+        'Nine pages of hand-written HTML, CSS and JavaScript — roughly 8,700 lines, no framework and no build step. A design-token layer in CSS custom properties carries the cream, teal and gold palette and the Cormorant Garamond over DM Sans type pairing across every page. Interactive pieces are real rather than mocked: a full-screen mega-menu that closes on Escape and locks body scroll, a donation widget where preset amounts and a free-text field deselect each other, a livestream player with play/pause and viewer count, and a May 2026 calendar generated in JavaScript with per-day event markers. Breakpoints at 960, 900, 600 and 560 pixels, and 39 aria-labels across the set.',
+      'showcase viewer':
+        'A self-contained review tool wrapping the nine pages in an iframe, with a sidebar index grouped by section, a desktop/mobile toggle that resizes the frame rather than reloading it, and j/k keyboard navigation between pages. When a link inside the prototype navigates the iframe, a load handler reads the new path and re-syncs the sidebar selection, so the index never lies about what is on screen. Built so the whole design could be reviewed in one place without a deployment.',
+      'CMS platform':
+        'Squarespace, retained deliberately over WordPress. The Cathedral\'s existing site turned out to run a legacy version of the platform with no section-based editor, so the redesign was built on a new Squarespace instance on the current version and content was migrated by hand — service schedules, event listings, giving links, staff biographies, ministry descriptions and historical content. Events run through the native events collection with a homepage Summary Block pulling the next ones automatically, so staff never duplicate an entry. Giving stays on the Cathedral\'s existing Stripe integration, with Planning Center handling donor records and automated tax receipts.',
+      handoff:
+        'A CMS handoff guide written for the administrator\'s assessed skill level — step-by-step with screenshots for logging in, adding and editing events, updating the service schedule, managing the giving page and reading analytics, plus troubleshooting for broken links, images that fail to load and form submissions that do not arrive. Shipped with a recorded walkthrough, a brand style guide covering fonts, colour, spacing and image treatment, and documentation of the domain cutover as a minutes-long registrar change.',
+    },
+    highlights: [
+      'Acted as technical liaison to the Cathedral — ran the requirements conversations with their staff, separated what they actually needed from what the team had assumed, and turned it into the week-by-week delivery plan the engagement ran on: every member\'s tasks across the four build weeks, the deliverables each week had to produce, and the explicit calls on what to deprioritise',
+      'Directed the visual design end to end: reviewed every iteration of the high-fidelity mockups with the client, specified what to add, cut and change, and handed those decisions back to the designer generating them — then implemented the approved design myself',
+      'Authored the software design and engineering package and produced every diagram in it: four use cases, a short-form specification of "View Upcoming Events" down to its alternative flows, and five UML models — use case, activity with swim lanes across user, browser and server, sequence, component and deployment',
+      'Recommended against a WordPress migration and documented why: with five employees, two interns and no technical staff, ongoing plugin maintenance and security patching was a larger risk than the plugin ecosystem was a benefit, and migrating would have thrown away the one administrator\'s existing platform fluency',
+      'Restructured the information architecture from ten top-level headings to five and consolidated six giving destinations — scattered across Music, Cathedral Arts and Advancement — onto a single Give page, with a four-link action navbar over a full-screen overlay and a sticky mobile bottom bar injected through Squarespace code injection below 768px',
+      'Discovered mid-build that the Cathedral\'s Squarespace ran a legacy version without the section editor; rebuilt on a new instance on the current platform and migrated content by hand, leaving the original site live and untouched throughout so visitors saw no disruption at any point',
+      'Hand-coded a nine-page prototype with no framework, plus a showcase viewer with iframe preview, desktop/mobile toggle and keyboard navigation, so a client who had never seen a staging site could click through the entire design before any commitment',
+      'Built the financial case the recommendation rests on — +$34,660 NPV at the required 10% discount rate, a 69.4% IRR against a 10% hurdle, 80.1% ROI on the Cathedral\'s own cash, roughly 15-month payback, and eight risks quantified to $48,000 of expected monetary value, with sensitivity analysis holding NPV positive and IRR above hurdle even at 40% higher costs and 40% lower benefits — and the four-phase implementation roadmap it carries, taking the Cathedral from network and website foundations in 2026 through consolidation and security into ongoing optimisation past 2028, with cost ranges attached to every phase',
+    ],
+    challenges:
+      'The team had no direct access to the Cathedral\'s systems, staff machines or full facilities, so every finding came from a structured discovery questionnaire, a client interview, publicly available resources and the building\'s Matterport LiDAR scan. That shaped what could honestly be claimed, and the assessment is explicit about which conclusions rest on assumption. The platform decision was the real tension: WordPress was the stronger platform on paper and the wrong answer for this client, and arguing for the less impressive option took considerably more justification than recommending the migration would have. The legacy-Squarespace discovery landed mid-build and turned an in-place redesign into a rebuild on a new instance. And the engagement ends at a recommendation — the Great Chapter holds authority over significant expenditure, so the cutover was always the Cathedral\'s decision to make rather than ours to ship.',
+    results:
+      'Handed to Cathedral leadership at the close of the Spring 2026 semester: a 51-page final report, the redesigned site on a new Squarespace instance, the nine-page prototype and showcase viewer, the CMS handoff guide and recorded walkthrough, a brand style guide, and my software design package and cost-benefit analysis with its phased implementation roadmap. The wider team package added bid-ready network specifications, a Google Drive digital asset management pilot, a security assessment and a systems consolidation roadmap. Consolidating off Servant Keeper, Donorbox, Brown Paper Tickets, Paychex and two Dropbox accounts was projected to save $1,540–$3,420 a year in subscriptions plus $5,200–$10,000 in recovered staff time, against an in-kind contribution valued at $37,500 across roughly 625 team hours at no cost to the Cathedral. cathedralofallsaints.org still runs the original site — pointing the domain is a Great Chapter decision, and what is linked here is the design as it was handed over.',
+    images: [
+      '/images/projects/cathedral/homepage.jpg',
+      '/images/projects/cathedral/events.jpg',
+      '/images/projects/cathedral/event-detail.jpg',
+      '/images/projects/cathedral/give.jpg',
+      '/images/projects/cathedral/music-fund.jpg',
+      '/images/projects/cathedral/watch-live.jpg',
     ],
   },
   {

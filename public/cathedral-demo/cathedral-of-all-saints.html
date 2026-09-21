@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Cathedral of All Saints</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5EFE4;
+    --cream-light: #FBF7EE;
+    --cream-card: #F6F0E5;
+    --teal: #2A5965;
+    --teal-mid: #3F7B8A;
+    --teal-light: #5C95A4;
+    --teal-dark: #1F4753;
+    --ink: #1A1A1A;
+    --dark-bg: #1C1C1C;
+    --text: #2A2A2A;
+    --text-soft: #5A5A5A;
+    --text-muted: #8A8A8A;
+    --border: rgba(42, 89, 101, 0.18);
+    --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+    --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--text);
+    background: var(--cream);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 40px; }
+
+  /* HEADER */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 40px; max-width: 1440px; margin: 0 auto;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--serif); font-size: 22px; font-weight: 600;
+    color: var(--ink); letter-spacing: -0.01em;
+  }
+  .logo-mark { width: 32px; height: 32px; color: var(--teal); }
+  .nav { display: flex; align-items: center; gap: 38px; }
+  .nav a {
+    font-size: 15px; color: var(--text);
+    transition: color 0.2s ease; position: relative;
+  }
+  .nav a.active { color: var(--teal); }
+  .nav a.active::after {
+    content: ''; position: absolute; bottom: -8px; left: 0; right: 0;
+    height: 1.5px; background: var(--teal);
+  }
+  .nav a:hover { color: var(--teal); }
+  .menu-btn {
+    display: flex; align-items: center; gap: 10px;
+    background: none; border: none; font-family: var(--sans);
+    font-size: 13px; font-weight: 500; letter-spacing: 0.12em;
+    color: var(--ink); cursor: pointer; padding: 8px 4px;
+    text-transform: uppercase;
+  }
+  .menu-btn svg { width: 18px; height: 18px; }
+
+  /* HERO */
+  .hero {
+    position: relative; min-height: 640px;
+    display: flex; align-items: center; overflow: hidden;
+    background: linear-gradient(180deg, #d8c9a8 0%, #b8a583 100%);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(105deg, rgba(245, 239, 228, 0.78) 0%, rgba(245, 239, 228, 0.35) 45%, rgba(245, 239, 228, 0.15) 100%),
+      url('img/photo-1548276145.jpg');
+    background-size: cover; background-position: center;
+  }
+  .hero-content {
+    position: relative; z-index: 2; max-width: 1280px;
+    margin: 0 auto; padding: 100px 40px; width: 100%;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(48px, 7vw, 92px);
+    line-height: 1.02; font-weight: 500;
+    color: var(--ink); letter-spacing: -0.015em; max-width: 800px;
+  }
+  .hero h1 em { font-style: italic; font-weight: 500; }
+  .hero p {
+    margin-top: 28px; font-size: 17px; line-height: 1.55;
+    color: var(--text); max-width: 460px;
+  }
+  .hero-ctas { margin-top: 40px; display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-block; padding: 16px 30px;
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.25s ease;
+    border: 1.5px solid transparent;
+  }
+  .btn-primary { background: var(--teal); color: #fff; }
+  .btn-primary:hover { background: var(--teal-dark); }
+  .btn-secondary {
+    background: rgba(255,255,255,0.08);
+    border-color: var(--text); color: var(--text);
+    backdrop-filter: blur(4px);
+  }
+  .btn-secondary:hover { background: rgba(0,0,0,0.05); }
+  .btn-dark { background: var(--ink); color: #fff; }
+  .btn-dark:hover { background: #000; }
+
+  /* SACRED RHYTHMS */
+  .liturgy { background: #fff; padding: 100px 0; }
+  .liturgy-grid {
+    display: grid; grid-template-columns: 1fr 1.1fr;
+    gap: 60px; margin-bottom: 56px;
+  }
+  .eyebrow {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--teal-mid); margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(38px, 4.5vw, 56px);
+    line-height: 1.05; font-weight: 500;
+    color: var(--ink); letter-spacing: -0.01em;
+  }
+  .section-title em { font-style: italic; font-weight: 500; }
+  .liturgy-desc {
+    align-self: end; font-size: 16px; line-height: 1.6;
+    color: var(--text-soft); max-width: 480px;
+  }
+  .rhythm-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .rhythm-card {
+    background: var(--cream-card); padding: 32px 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .rhythm-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -20px rgba(31, 71, 83, 0.25);
+  }
+  .rhythm-card h3 {
+    font-family: var(--serif); font-size: 24px; font-weight: 600;
+    color: var(--ink); margin-bottom: 22px;
+  }
+  .service-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 10px 0; gap: 16px;
+  }
+  .service-row + .service-row { border-top: 1px dotted rgba(0,0,0,0.08); }
+  .service-name { font-size: 14.5px; color: var(--text); }
+  .service-date { font-size: 12px; color: var(--text-muted); margin-left: 8px; }
+  .service-time {
+    font-size: 14px; font-weight: 500; color: var(--teal); white-space: nowrap;
+  }
+
+  /* WATCH & REFLECT */
+  .reflect {
+    background: var(--dark-bg); color: #fff;
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 460px; overflow: hidden;
+  }
+  .sermon-visual {
+    position: relative;
+    background:
+      radial-gradient(ellipse at center, rgba(212, 175, 90, 0.35) 0%, rgba(28,28,28,0) 55%),
+      linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 60px; cursor: pointer;
+  }
+  .cross { position: relative; width: 90px; height: 130px; margin-bottom: 30px; }
+  .cross::before, .cross::after {
+    content: ''; position: absolute;
+    background: linear-gradient(180deg, rgba(232,198,110,0.95), rgba(180,140,60,0.6));
+    box-shadow: 0 0 30px rgba(232,198,110,0.7), 0 0 60px rgba(232,198,110,0.35);
+  }
+  .cross::before {
+    width: 6px; height: 130px; left: 50%; transform: translateX(-50%);
+  }
+  .cross::after {
+    width: 56px; height: 6px; top: 38px; left: 50%; transform: translateX(-50%);
+  }
+  .cross-glow {
+    position: absolute; top: 32px; left: 50%; transform: translateX(-50%);
+    width: 70px; height: 70px;
+    background: radial-gradient(circle, rgba(255,220,140,0.85) 0%, rgba(232,198,110,0) 65%);
+    border-radius: 50%; z-index: -1;
+  }
+  .play-btn {
+    width: 56px; height: 56px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 36px; transition: all 0.3s ease;
+  }
+  .sermon-visual:hover .play-btn {
+    background: rgba(255,255,255,0.25); transform: scale(1.05);
+  }
+  .play-btn svg { width: 18px; height: 18px; fill: #fff; }
+  .sermon-label {
+    font-family: var(--serif); font-size: 22px;
+    letter-spacing: 0.3em; color: rgba(212,175,90,0.85);
+    text-transform: uppercase;
+  }
+  .reflect-content {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 60px 80px;
+    background:
+      linear-gradient(90deg, var(--dark-bg) 0%, rgba(28,28,28,0.85) 50%, rgba(28,28,28,0.6) 100%),
+      url('img/photo-1507608616759.jpg');
+    background-size: cover; background-position: center;
+  }
+  .reflect-content .eyebrow { color: var(--teal-light); margin-bottom: 18px; }
+  .reflect-content h2 {
+    font-family: var(--serif);
+    font-size: clamp(34px, 3.5vw, 46px);
+    font-weight: 500; line-height: 1.15;
+    color: #fff; margin-bottom: 20px;
+  }
+  .reflect-content p {
+    font-size: 15.5px; line-height: 1.65;
+    color: rgba(255,255,255,0.78);
+    margin-bottom: 28px; max-width: 460px;
+  }
+  .arrow-link {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--teal-light);
+    transition: gap 0.3s ease;
+  }
+  .arrow-link:hover { gap: 14px; color: #fff; }
+  .arrow-link svg { width: 16px; height: 16px; }
+
+  /* COMMUNITY EVENTS */
+  .events { background: var(--cream); padding: 100px 0 110px; }
+  .events-header { text-align: center; margin-bottom: 64px; }
+  .events-header h2 {
+    font-family: var(--serif);
+    font-size: clamp(30px, 3.2vw, 42px);
+    font-weight: 400; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--ink); margin-bottom: 18px;
+  }
+  .events-header::after {
+    content: ''; display: block;
+    width: 70px; height: 2px;
+    background: var(--teal); margin: 0 auto;
+  }
+  .events-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 22px; }
+
+  .featured-event {
+    position: relative; min-height: 460px; overflow: hidden;
+    background: #1a1a1a; color: #fff;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 36px 38px;
+  }
+  .featured-event::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%),
+      url('img/photo-1501281668745.jpg');
+    background-size: cover; background-position: center;
+    z-index: 0; transition: transform 0.6s ease;
+  }
+  .featured-event:hover::before { transform: scale(1.04); }
+  .featured-event > * { position: relative; z-index: 1; }
+  .badge {
+    display: inline-block; background: var(--teal); color: #fff;
+    font-size: 10.5px; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; padding: 7px 14px;
+    margin-bottom: 14px; align-self: flex-start;
+  }
+  .featured-event h3 {
+    font-family: var(--serif); font-size: 36px; font-weight: 500;
+    margin-bottom: 12px; line-height: 1.1;
+  }
+  .featured-event p {
+    font-size: 14.5px; color: rgba(255,255,255,0.82);
+    margin-bottom: 18px; max-width: 420px;
+  }
+  .event-date {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--teal-light);
+  }
+  .event-cards { display: grid; grid-template-rows: 1fr 1fr; gap: 22px; }
+  .event-cards-row { display: grid; gap: 22px; }
+  .event-cards-row.split { grid-template-columns: 1fr 1fr; }
+  .event-card {
+    background: var(--cream-card); padding: 28px 30px;
+    display: flex; flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer;
+  }
+  .event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -20px rgba(31, 71, 83, 0.25);
+  }
+  .event-card.dark { background: var(--teal); color: #fff; }
+  .event-card .eyebrow { color: var(--teal-mid); margin-bottom: 10px; }
+  .event-card.dark .eyebrow { color: rgba(255,255,255,0.7); }
+  .event-card h4 {
+    font-family: var(--serif); font-size: 22px; font-weight: 600;
+    margin-bottom: 12px; color: inherit;
+  }
+  .event-card p {
+    font-size: 14px; line-height: 1.55; color: var(--text-soft); flex: 1;
+  }
+  .event-card.dark p { color: rgba(255,255,255,0.78); }
+  .event-card .event-date { margin-top: 18px; color: var(--teal); }
+  .event-card.dark .event-date { color: rgba(255,255,255,0.85); }
+
+  /* OUR IMPACT */
+  .impact { background: #fff; padding: 110px 0; }
+  .impact-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .impact-content h2 {
+    font-family: var(--serif);
+    font-size: clamp(38px, 4.5vw, 56px);
+    line-height: 1.05; font-weight: 500;
+    color: var(--ink); margin-bottom: 22px;
+  }
+  .impact-content h2 em { font-style: italic; }
+  .impact-content > p {
+    font-size: 16px; line-height: 1.65;
+    color: var(--text-soft); margin-bottom: 36px; max-width: 480px;
+  }
+  .stats { display: flex; gap: 60px; margin-bottom: 36px; }
+  .stat-num {
+    font-family: var(--serif); font-size: 44px;
+    font-weight: 500; color: var(--teal); line-height: 1;
+  }
+  .stat-label {
+    margin-top: 6px; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .impact-visual {
+    position: relative; aspect-ratio: 5/4;
+    background: linear-gradient(135deg, #2a4855 0%, #1a3540 60%, #0d2128 100%);
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .impact-visual::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 70%, rgba(95,145,165,0.4) 0%, transparent 50%);
+  }
+  .bottle {
+    position: relative; width: 110px; height: 240px;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+  }
+  .bottle-body {
+    position: absolute; bottom: 0; width: 110px; height: 200px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(220,225,230,0.85) 100%);
+    border-radius: 8px 8px 6px 6px;
+  }
+  .bottle-neck {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 50px; height: 50px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(220,225,230,0.8) 100%);
+    border-radius: 6px 6px 0 0;
+  }
+  .bottle-cap {
+    position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 14px;
+    background: rgba(255,255,255,0.7); border-radius: 4px 4px 0 0;
+  }
+  .partner-text {
+    position: absolute; bottom: 32px; left: 0; right: 0;
+    text-align: center; font-family: var(--serif);
+    font-size: 26px; font-weight: 600; letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.95); line-height: 1.15; z-index: 2;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--cream);
+    border-top: 1px solid var(--border);
+    padding: 70px 0 32px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    gap: 60px; margin-bottom: 50px;
+  }
+  .footer-brand .logo { font-size: 20px; margin-bottom: 18px; }
+  .footer-brand p {
+    font-size: 14px; color: var(--text-soft); line-height: 1.6;
+    max-width: 280px; margin-bottom: 22px;
+  }
+  .social { display: flex; gap: 14px; }
+  .social a {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); border-radius: 50%;
+    color: var(--text-soft); transition: all 0.2s ease;
+  }
+  .social a:hover { border-color: var(--teal); color: var(--teal); }
+  .social svg { width: 14px; height: 14px; }
+  .footer h5 {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--teal-mid); margin-bottom: 18px;
+  }
+  .footer ul { list-style: none; }
+  .footer li {
+    font-size: 13.5px; margin-bottom: 10px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .footer li a { color: var(--text); transition: color 0.2s; }
+  .footer li a:hover { color: var(--teal); }
+  .footer-contact p { font-size: 14px; color: var(--text); margin-bottom: 4px; }
+  .newsletter-btn {
+    display: inline-block; margin-top: 22px;
+    padding: 12px 22px; border: 1.5px solid var(--ink);
+    background: transparent; font-family: var(--sans);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .newsletter-btn:hover { background: var(--ink); color: #fff; }
+  .footer-bottom {
+    border-top: 1px solid var(--border); padding-top: 26px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--text-muted);
+  }
+
+  /* MEGA MENU */
+  .mega-menu {
+    position: fixed; inset: 0;
+    background: var(--cream-light); z-index: 200;
+    transform: translateY(-100%);
+    transition: transform 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+    overflow-y: auto;
+  }
+  .mega-menu.open { transform: translateY(0); }
+  .mega-top {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 28px 50px; border-bottom: 1px solid var(--border);
+  }
+  .mega-brand {
+    font-family: var(--sans); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal);
+  }
+  .close-btn {
+    background: none; border: none; cursor: pointer;
+    padding: 8px; color: var(--ink);
+  }
+  .close-btn svg { width: 22px; height: 22px; }
+  .mega-content { padding: 60px 50px; max-width: 1200px; margin: 0 auto; }
+  .mega-grid {
+    display: grid;
+    grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr; gap: 40px;
+  }
+  .mega-col h6 {
+    font-family: var(--serif); font-size: 26px; font-weight: 500;
+    color: var(--teal); margin-bottom: 24px;
+  }
+  .mega-col.home h6 { color: var(--ink); }
+  .mega-col ul { list-style: none; }
+  .mega-col li { margin-bottom: 12px; }
+  .mega-col li a {
+    font-size: 14.5px; color: var(--text);
+    transition: color 0.2s, padding-left 0.2s; display: inline-block;
+  }
+  .mega-col li a:hover { color: var(--teal); padding-left: 6px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 960px) {
+    .nav { gap: 18px; }
+    .nav a:not(.active):not(.menu-btn-wrap) { display: none; }
+    .liturgy-grid { grid-template-columns: 1fr; gap: 24px; }
+    .rhythm-cards { grid-template-columns: 1fr; }
+    .reflect { grid-template-columns: 1fr; }
+    .events-grid { grid-template-columns: 1fr; }
+    .impact-grid { grid-template-columns: 1fr; gap: 50px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .mega-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+    .container, .header-inner { padding: 0 24px; }
+    .hero-content { padding: 70px 24px; }
+    .reflect-content { padding: 50px 30px; }
+    .stats { gap: 40px; }
+  }
+  @media (max-width: 600px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .mega-grid { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .hero-ctas .btn { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <svg class="logo-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M16 4 L16 28 M16 4 L8 12 L24 12 L16 4 Z M6 28 L26 28 M10 28 L10 16 L22 16 L22 28 M14 28 L14 22 L18 22 L18 28"/>
+      </svg>
+      Cathedral of All Saints
+    </a>
+    <nav class="nav">
+      <a href="#" class="active">Worship</a>
+      <a href="events.html">Events</a>
+      <a href="give.html">Give</a>
+      <a href="watch-live.html">Watch Live</a>
+      <button class="menu-btn" id="menuBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <line x1="4" y1="8" x2="20" y2="8"/>
+          <line x1="4" y1="16" x2="20" y2="16"/>
+        </svg>
+        Menu
+      </button>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1>A Space for the<br><em>Soul to Breathe</em></h1>
+    <p>Centuries of faith, architectural beauty, and a welcoming community waiting for you in the heart of the city.</p>
+    <div class="hero-ctas">
+      <a href="events.html" class="btn btn-primary">Join Us This Sunday</a>
+      <a href="#" class="btn btn-secondary">Plan Your Visit</a>
+    </div>
+  </div>
+</section>
+
+<section class="liturgy">
+  <div class="container">
+    <div class="liturgy-grid">
+      <div>
+        <div class="eyebrow">Our Liturgy</div>
+        <h2 class="section-title">Sacred Rhythms</h2>
+      </div>
+      <p class="liturgy-desc">Worship at the Cathedral is an invitation to enter into a timeless dialogue with the Divine through music, prayer, and sacrament.</p>
+    </div>
+
+    <div class="rhythm-cards">
+      <div class="rhythm-card">
+        <h3>Sundays</h3>
+        <div class="service-row">
+          <div><span class="service-name">Holy Eucharist</span><span class="service-date">Oct 27</span></div>
+          <span class="service-time">8:00 AM</span>
+        </div>
+        <div class="service-row">
+          <div><span class="service-name">Choral Eucharist</span><span class="service-date">Oct 27</span></div>
+          <span class="service-time">10:30 AM</span>
+        </div>
+        <div class="service-row">
+          <div><span class="service-name">Evensong</span><span class="service-date">Oct 27</span></div>
+          <span class="service-time">4:00 PM</span>
+        </div>
+      </div>
+
+      <div class="rhythm-card">
+        <h3>Weekdays</h3>
+        <div class="service-row">
+          <div><span class="service-name">Morning Prayer</span><span class="service-date">Oct 28–Nov 1</span></div>
+          <span class="service-time">7:30 AM</span>
+        </div>
+        <div class="service-row">
+          <div><span class="service-name">Midday Prayer</span><span class="service-date">Oct 28–Nov 1</span></div>
+          <span class="service-time">12:15 PM</span>
+        </div>
+      </div>
+
+      <div class="rhythm-card">
+        <h3>Saturdays</h3>
+        <div class="service-row">
+          <div><span class="service-name">Quiet Contemplation</span><span class="service-date">Nov 2</span></div>
+          <span class="service-time">10:00 AM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reflect">
+  <div class="sermon-visual">
+    <div class="cross-glow"></div>
+    <div class="cross"></div>
+    <div class="play-btn">
+      <svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>
+    </div>
+    <div class="sermon-label">Sermon</div>
+  </div>
+  <div class="reflect-content">
+    <div class="eyebrow">Watch &amp; Reflect</div>
+    <h2>The Architecture of Hope</h2>
+    <p>Explore this week's message on finding stability in shifting times, delivered from the historic pulpit by Dean Michael Henderson.</p>
+    <a href="watch-live.html#archive" class="arrow-link">
+      Explore Sermon Archive
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <line x1="4" y1="12" x2="20" y2="12"/>
+        <polyline points="14,6 20,12 14,18"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<section class="events">
+  <div class="container">
+    <div class="events-header" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+      <h2>Community Events</h2>
+      <a href="events.html" style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#2A5965;border-bottom:1px solid #2A5965;padding-bottom:3px;text-decoration:none;">View All Events →</a>
+    </div>
+
+    <div class="events-grid">
+      <a href="event-resonant-spirits.html" style="display:block;color:inherit;text-decoration:none;">
+        <article class="featured-event">
+          <span class="badge">Annual Series</span>
+          <h3>Advent Choral Concert</h3>
+          <p>Experience the majestic voices of the Cathedral Choir in an evening of sacred music and reflection.</p>
+          <div class="event-date">December 15 | 7:00 PM</div>
+        </article>
+      </a>
+
+      <div class="event-cards">
+        <a href="event-resonant-spirits.html" style="display:block;color:inherit;text-decoration:none;">
+          <article class="event-card">
+            <div class="eyebrow">Discussion</div>
+            <h4>Theology on Tap</h4>
+            <p>Join us for informal conversations about faith, life, and meaning at The Cloister Cafe.</p>
+            <div class="event-date">Thursday, October 31 | 6:30 PM</div>
+          </article>
+        </a>
+
+        <div class="event-cards-row split">
+          <a href="event-resonant-spirits.html" style="display:block;color:inherit;text-decoration:none;">
+            <article class="event-card">
+              <div class="eyebrow">Outreach</div>
+              <h4>Community Kitchen</h4>
+              <p>Join our team of volunteers serving neighbors in need.</p>
+              <div class="event-date">Tuesday, Oct 29 | 4:00 PM</div>
+            </article>
+          </a>
+
+          <a href="event-resonant-spirits.html" style="display:block;color:inherit;text-decoration:none;">
+            <article class="event-card dark">
+              <div class="eyebrow">Youth</div>
+              <h4>Cathedral Youth</h4>
+              <p>A space for discovery and friendship for ages 13–18.</p>
+              <div class="event-date">Sunday, Nov 3 | 12:00 PM</div>
+            </article>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="impact">
+  <div class="container">
+    <div class="impact-grid">
+      <div class="impact-content">
+        <div class="eyebrow">Our Impact</div>
+        <h2>Serving Others with <em>Open Hands</em></h2>
+        <p>Beyond the stone walls, the Cathedral is a living force for good. Through our outreach programs, we strive to be the heart of compassion in our city.</p>
+        <div class="stats">
+          <div>
+            <div class="stat-num">15k+</div>
+            <div class="stat-label">Meals Served Annually</div>
+          </div>
+          <div>
+            <div class="stat-num">200+</div>
+            <div class="stat-label">Active Volunteers</div>
+          </div>
+        </div>
+        <a href="give.html" class="btn btn-dark">Get Involved</a>
+      </div>
+
+      <div class="impact-visual">
+        <div class="bottle">
+          <div class="bottle-cap"></div>
+          <div class="bottle-neck"></div>
+          <div class="bottle-body"></div>
+        </div>
+        <div class="partner-text">OUTREACH<br>SAFE OF WORK</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <svg class="logo-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M16 4 L16 28 M16 4 L8 12 L24 12 L16 4 Z M6 28 L26 28 M10 28 L10 16 L22 16 L22 28 M14 28 L14 22 L18 22 L18 28"/>
+          </svg>
+          Cathedral of All Saints
+        </a>
+        <p>A historic landmark and vibrant Episcopal community dedicated to worship, service, and the arts.</p>
+        <div class="social">
+          <a href="#" aria-label="Website">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M3 12 H21 M12 3 C 14.5 6 16 9 16 12 C 16 15 14.5 18 12 21 C 9.5 18 8 15 8 12 C 8 9 9.5 6 12 3 Z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="3" y="5" width="18" height="14" rx="1"/>
+              <polyline points="3,7 12,13 21,7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#">Location</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Connect</h5>
+        <div class="footer-contact">
+          <p>123 Cathedral Plaza</p>
+          <p>Albany, NY 12207</p>
+          <p>(518) 555-0123</p>
+        </div>
+      </div>
+
+      <div>
+        <h5>Stay In Touch</h5>
+        <p style="font-size:13px;color:var(--text-soft);max-width:240px;">Receive sermon notes, event invitations, and reflections from the Dean.</p>
+        <button class="newsletter-btn">Newsletter Signup</button>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 Cathedral of All Saints. All rights reserved.</div>
+      <div>The Sacred Light</div>
+    </div>
+  </div>
+</footer>
+
+<div class="mega-menu" id="megaMenu">
+  <div class="mega-top">
+    <div class="mega-brand">The Sacred Light</div>
+    <button class="close-btn" id="closeBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <line x1="6" y1="6" x2="18" y2="18"/>
+        <line x1="18" y1="6" x2="6" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="mega-content">
+    <div class="mega-grid">
+      <div class="mega-col home"><h6>Home</h6></div>
+
+      <div class="mega-col">
+        <h6>About</h6>
+        <ul>
+          <li><a href="#">Mission</a></li>
+          <li><a href="#">Dean</a></li>
+          <li><a href="#">Clergy &amp; Staff</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Visual Identity</a></li>
+          <li><a href="#">Virtual Tour</a></li>
+          <li><a href="#">Textile Art</a></li>
+          <li><a href="#">Videos</a></li>
+          <li><a href="#">History</a></li>
+        </ul>
+      </div>
+
+      <div class="mega-col">
+        <h6>Worship</h6>
+        <ul>
+          <li><a href="#">Weekly Services</a></li>
+          <li><a href="#">Worship Info</a></li>
+          <li><a href="#">Sermons</a></li>
+          <li><a href="#">Cathedral Choir</a></li>
+          <li><a href="#">Organ Fellowship</a></li>
+          <li><a href="#">Choir Portal</a></li>
+          <li><a href="watch-live.html">Livestream</a></li>
+        </ul>
+      </div>
+
+      <div class="mega-col">
+        <h6>Community</h6>
+        <ul>
+          <li><a href="events.html">All Events</a></li>
+          <li><a href="event-resonant-spirits.html">Featured Event</a></li>
+          <li><a href="#">Cathedral in Bloom</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Outreach</a></li>
+          <li><a href="#">Education</a></li>
+          <li><a href="#">Guild House</a></li>
+          <li><a href="#">Cathedral Arts</a></li>
+        </ul>
+      </div>
+
+      <div class="mega-col">
+        <h6>Give</h6>
+        <ul>
+          <li><a href="give.html">Support our Mission</a></li>
+          <li><a href="planned-giving.html">Planned Giving</a></li>
+          <li><a href="legacy-of-light.html">Legacy of Light</a></li>
+          <li><a href="music-department-fund.html">Music Department Fund</a></li>
+          <li><a href="friends-of-the-choir.html">Friends of the Choir</a></li>
+          <li><a href="#">Capital Campaign</a></li>
+          <li><a href="#">Bequests</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const closeBtn = document.getElementById('closeBtn');
+  const megaMenu = document.getElementById('megaMenu');
+
+  menuBtn.addEventListener('click', () => {
+    megaMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+
+  closeBtn.addEventListener('click', () => {
+    megaMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && megaMenu.classList.contains('open')) {
+      megaMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+
+  document.querySelectorAll('.mega-col a').forEach(link => {
+    link.addEventListener('click', () => {
+      megaMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+</script>
+
+</body>
+</html>
