@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, ArrowUpRight, Github, Smartphone } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, FileText, Github, Smartphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tag } from '@/components/ui/tag';
 import { Section } from '@/components/ui/section';
@@ -111,6 +111,37 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               <p className="text-base leading-relaxed text-theme-fg-muted">{s.content}</p>
             </div>
           ))}
+
+          {project.documents && project.documents.length > 0 && (
+            <div>
+              <h2 className="mb-6 text-xs font-semibold uppercase tracking-[0.1em] text-theme-fg-dim">DELIVERABLES</h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {project.documents.map((doc) => (
+                  <a
+                    key={doc.file}
+                    href={doc.file}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/doc flex flex-col rounded-2xl p-5 transition-colors hover:border-theme-fg-dim"
+                    style={{ border: '1px solid var(--color-border)' }}
+                  >
+                    <div className="mb-2 flex items-start gap-3">
+                      <FileText className="mt-0.5 h-4 w-4 flex-shrink-0 text-theme-accent" aria-hidden />
+                      <h3 className="text-sm font-semibold text-theme-fg">{doc.label}</h3>
+                      <ArrowUpRight
+                        className="ml-auto h-4 w-4 flex-shrink-0 text-theme-fg-dim transition-colors group-hover/doc:text-theme-accent"
+                        aria-hidden
+                      />
+                    </div>
+                    <p className="text-sm leading-relaxed text-theme-fg-muted">{doc.description}</p>
+                    <p className="mt-3 text-[0.7rem] font-medium uppercase tracking-[0.1em] text-theme-fg-dim">
+                      {doc.meta}
+                    </p>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div>
             <h2 className="mb-6 text-xs font-semibold uppercase tracking-[0.1em] text-theme-fg-dim">SCREENSHOTS</h2>

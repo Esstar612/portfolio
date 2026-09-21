@@ -33,6 +33,19 @@ export interface Project {
   challenges: string;
   results: string;
   images: string[];
+  /**
+   * Deliverables a reader can open for themselves, served from /public.
+   * Only documents I authored and that carry nothing the client would not
+   * want public — no security assessments, no staff names, no credentials.
+   */
+  documents?: {
+    label: string;
+    description: string;
+    /** Path under /public, opened in a new tab rather than downloaded. */
+    file: string;
+    /** Short "12 pages · PDF" style line. */
+    meta: string;
+  }[];
 }
 
 export const projects: Project[] = [
@@ -125,47 +138,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: 'upstate-underdog-rescue',
-    title: 'Upstate Underdog Rescue',
-    tagline: 'Research-driven nonprofit website redesign improving usability and donation intent.',
-    description:
-      'Led an end-to-end redesign of a nonprofit dog rescue website using the Double Diamond UX framework. Conducted user research, A/B testing, and AI sentiment analysis to deliver a data-driven redesign that improved trust, usability, and donation confidence.',
-    tags: ['UX Research', 'A/B Testing', 'Weebly', 'User Testing', 'HCI'],
-    thumbnail: '/images/projects/uur/thumbnail.png',
-    featured: true,
-    year: '2026',
-    links: {
-      live: 'https://upstateunderdog.weebly.com/',
-    },
-    problem:
-      'Upstate Underdog Rescue\'s website suffered from buried information, broken navigation links, and unfinished features (shop, events) that created a disconnect between user intent and available actions. The site failed to convert visitors into adopters or donors — all adoptions happened through offline founder connections rather than the website.',
-    solution:
-      'Following the Double Diamond framework, we redesigned the site architecture around four core pages (Home, About, Adopt, Donate) with clear CTAs, emotionally engaging superhero branding, and streamlined donation flows. Design decisions were validated through user personas, card sorting, comparative analysis, stakeholder interviews, A/B testing, and AI sentiment analysis.',
-    architecture: {
-      frontend: 'Rebuilt on Weebly to match the client\'s existing environment for easy self-management post-launch. Custom color palette (Underdog Blue, Braveheart Blue, Forever Friend Pink) with Bree Serif and Poppins typography. Responsive design with clear visual hierarchy.',
-      backend: 'Weebly CMS with embedded Google Forms for adoption applications and PayPal/credit card integration for donations. Calendar widget for events. Contact form with direct email routing.',
-      database: 'N/A — Content managed through Weebly CMS. Adoption applications collected via Google Forms with automatic spreadsheet logging for the client.',
-      infrastructure: 'Hosted on Weebly at $13/month ($100/year). Google Forms for data collection. PayPal for donation processing. Social media integration (Instagram, Facebook). Best Friends Animal Society partner badge for credibility.',
-    },
-    highlights: [
-      'Conducted mixed-methods UX research using the Double Diamond framework: user personas, card sorting, comparative analysis, founder interviews, A/B testing, and AI sentiment analysis',
-      'Redesign achieved +0.80 mean sentiment polarity (vs -0.20 for original) — 80% positive responses compared to 20% for the old site',
-      'Improved all Likert-scale metrics: ease of use (3.80→4.75), trustworthiness (3.00→4.00), and donation confidence (2.20→3.60)',
-      'Validated design decisions through quantitative A/B testing: 80% of redesign users expressed willingness to donate (vs 40% on original site)',
-    ],
-    challenges:
-      'The core tension was designing a site that screens potential adopters (UUR\'s adoption process is rigorous) without alienating non-adopters who might still donate or volunteer. We resolved this through the "Every Dog Has A Superpower" framing — the superhero branding makes browsing dogs feel inviting rather than transactional, while clear CTAs for Adopt, Donate, and Volunteer give every user type a path forward. A practical challenge was the small sample size (n=5 per condition) for A/B testing, which limited statistical power. We compensated by triangulating across sentiment analysis, Likert scales, and qualitative thematic analysis.',
-    results:
-      'Delivered a production-ready Weebly site with measurable UX improvements across every tested dimension. Donation confidence increased by 64% (2.20→3.60). Qualitative feedback shifted from "confusing" and "outdated" to "intuitive," "smooth," and "visually appealing." Site designed for client self-management at $100/year.',
-    images: [
-      '/images/projects/uur/home.png',
-      '/images/projects/uur/about.png',
-      '/images/projects/uur/donate.png',
-      '/images/projects/uur/events.png',
-      '/images/projects/uur/get-involved.png',
-    ],
-  },
-  {
     slug: 'cathedral-of-all-saints',
     title: 'Cathedral of All Saints',
     tagline:
@@ -218,6 +190,63 @@ export const projects: Project[] = [
       '/images/projects/cathedral/give.jpg',
       '/images/projects/cathedral/music-fund.jpg',
       '/images/projects/cathedral/watch-live.jpg',
+    ],
+    documents: [
+      {
+        label: 'Software Design & Engineering',
+        description:
+          'Four use cases, a short-form specification of "View Upcoming Events", and the five UML models — use case, activity, sequence, component and deployment.',
+        file: '/documents/cathedral/software-design-and-engineering.pdf',
+        meta: '12 pages · PDF',
+      },
+      {
+        label: 'Cost-Benefit Analysis',
+        description:
+          'The financial case behind the recommendation to proceed: cost and benefit projections, NPV, IRR and ROI, an eight-risk register priced by expected monetary value, sensitivity analysis, and the phased roadmap.',
+        file: '/documents/cathedral/cost-benefit-analysis.pdf',
+        meta: '13 pages · PDF',
+      },
+    ],
+  },
+  {
+    slug: 'upstate-underdog-rescue',
+    title: 'Upstate Underdog Rescue',
+    tagline: 'Research-driven nonprofit website redesign improving usability and donation intent.',
+    description:
+      'Led an end-to-end redesign of a nonprofit dog rescue website using the Double Diamond UX framework. Conducted user research, A/B testing, and AI sentiment analysis to deliver a data-driven redesign that improved trust, usability, and donation confidence.',
+    tags: ['UX Research', 'A/B Testing', 'Weebly', 'User Testing', 'HCI'],
+    thumbnail: '/images/projects/uur/thumbnail.png',
+    featured: true,
+    year: '2026',
+    links: {
+      live: 'https://upstateunderdog.weebly.com/',
+    },
+    problem:
+      'Upstate Underdog Rescue\'s website suffered from buried information, broken navigation links, and unfinished features (shop, events) that created a disconnect between user intent and available actions. The site failed to convert visitors into adopters or donors — all adoptions happened through offline founder connections rather than the website.',
+    solution:
+      'Following the Double Diamond framework, we redesigned the site architecture around four core pages (Home, About, Adopt, Donate) with clear CTAs, emotionally engaging superhero branding, and streamlined donation flows. Design decisions were validated through user personas, card sorting, comparative analysis, stakeholder interviews, A/B testing, and AI sentiment analysis.',
+    architecture: {
+      frontend: 'Rebuilt on Weebly to match the client\'s existing environment for easy self-management post-launch. Custom color palette (Underdog Blue, Braveheart Blue, Forever Friend Pink) with Bree Serif and Poppins typography. Responsive design with clear visual hierarchy.',
+      backend: 'Weebly CMS with embedded Google Forms for adoption applications and PayPal/credit card integration for donations. Calendar widget for events. Contact form with direct email routing.',
+      database: 'N/A — Content managed through Weebly CMS. Adoption applications collected via Google Forms with automatic spreadsheet logging for the client.',
+      infrastructure: 'Hosted on Weebly at $13/month ($100/year). Google Forms for data collection. PayPal for donation processing. Social media integration (Instagram, Facebook). Best Friends Animal Society partner badge for credibility.',
+    },
+    highlights: [
+      'Conducted mixed-methods UX research using the Double Diamond framework: user personas, card sorting, comparative analysis, founder interviews, A/B testing, and AI sentiment analysis',
+      'Redesign achieved +0.80 mean sentiment polarity (vs -0.20 for original) — 80% positive responses compared to 20% for the old site',
+      'Improved all Likert-scale metrics: ease of use (3.80→4.75), trustworthiness (3.00→4.00), and donation confidence (2.20→3.60)',
+      'Validated design decisions through quantitative A/B testing: 80% of redesign users expressed willingness to donate (vs 40% on original site)',
+    ],
+    challenges:
+      'The core tension was designing a site that screens potential adopters (UUR\'s adoption process is rigorous) without alienating non-adopters who might still donate or volunteer. We resolved this through the "Every Dog Has A Superpower" framing — the superhero branding makes browsing dogs feel inviting rather than transactional, while clear CTAs for Adopt, Donate, and Volunteer give every user type a path forward. A practical challenge was the small sample size (n=5 per condition) for A/B testing, which limited statistical power. We compensated by triangulating across sentiment analysis, Likert scales, and qualitative thematic analysis.',
+    results:
+      'Delivered a production-ready Weebly site with measurable UX improvements across every tested dimension. Donation confidence increased by 64% (2.20→3.60). Qualitative feedback shifted from "confusing" and "outdated" to "intuitive," "smooth," and "visually appealing." Site designed for client self-management at $100/year.',
+    images: [
+      '/images/projects/uur/home.png',
+      '/images/projects/uur/about.png',
+      '/images/projects/uur/donate.png',
+      '/images/projects/uur/events.png',
+      '/images/projects/uur/get-involved.png',
     ],
   },
   {
