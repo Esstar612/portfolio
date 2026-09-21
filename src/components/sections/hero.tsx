@@ -18,9 +18,9 @@ export function Hero() {
 
           {/* Headline */}
           <h1 className="font-display text-[clamp(3.2rem,6.5vw,5.5rem)] font-normal leading-[1.08] tracking-tight text-theme-fg">
-            I craft digital products
+            I craft and <em className="text-theme-accent-soft">ship</em>
             <br />
-            that <em className="text-theme-accent-soft">actually</em> ship.
+            digital products.
           </h1>
 
           {/* Sub */}
