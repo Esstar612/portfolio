@@ -29,7 +29,11 @@ export interface Project {
    * the heading is the key, title-cased.
    */
   architecture: Record<string, string>;
+  /** Overrides the "TECHNICAL ARCHITECTURE" heading where that reads wrong. */
+  architectureLabel?: string;
   highlights: string[];
+  /** Overrides the "KEY ENGINEERING HIGHLIGHTS" heading. */
+  highlightsLabel?: string;
   challenges: string;
   results: string;
   images: string[];
@@ -211,10 +215,10 @@ export const projects: Project[] = [
   {
     slug: 'upstate-underdog-rescue',
     title: 'Upstate Underdog Rescue',
-    tagline: 'Research-driven nonprofit website redesign improving usability and donation intent.',
+    tagline: 'A nonprofit rescue site rebuilt on twelve weeks of UX research, then measured against the one it replaced.',
     description:
-      'Led an end-to-end redesign of a nonprofit dog rescue website using the Double Diamond UX framework. Conducted user research, A/B testing, and AI sentiment analysis to deliver a data-driven redesign that improved trust, usability, and donation confidence.',
-    tags: ['UX Research', 'A/B Testing', 'Weebly', 'User Testing', 'HCI'],
+      'A five-person HCI study of a Capital Region dog rescue whose website generated interest but had never produced a single adoption — every placement came through the founder\'s own connections. I ran the comparative analysis that set the design benchmark, built the brand system the redesign is drawn in, and wrote the A/B instruments that measured the result: sentiment moved from -0.20 to +0.80 and donation confidence from 2.20 to 3.60.',
+    tags: ['UX Research', 'A/B Testing', 'Brand System', 'Weebly', 'Sentiment Analysis', 'HCI'],
     thumbnail: '/images/projects/uur/thumbnail.png',
     featured: true,
     year: '2026',
@@ -222,31 +226,57 @@ export const projects: Project[] = [
       live: 'https://upstateunderdog.weebly.com/',
     },
     problem:
-      'Upstate Underdog Rescue\'s website suffered from buried information, broken navigation links, and unfinished features (shop, events) that created a disconnect between user intent and available actions. The site failed to convert visitors into adopters or donors — all adoptions happened through offline founder connections rather than the website.',
+      'Upstate Underdog Rescue places at-risk shelter dogs across the Capital Region of New York, and its website was not helping. Information sat buried, navigation links were broken, and whole features had been started and abandoned — the shop and the events page both led nowhere, so the two revenue streams a small rescue can least afford to lose were quietly dead. The founder interview produced the finding that reframed the project: the site had never converted anyone. Every adoption to date came through the founder\'s personal connections or in-person dog shows, because verifying an adopter face to face was easier than anything the site offered. Adoption also carried a real tension the design had to hold: UUR screens adopters rigorously and should, but a screening-first experience turns away the casual visitor who might have donated or volunteered instead.',
     solution:
-      'Following the Double Diamond framework, we redesigned the site architecture around four core pages (Home, About, Adopt, Donate) with clear CTAs, emotionally engaging superhero branding, and streamlined donation flows. Design decisions were validated through user personas, card sorting, comparative analysis, stakeholder interviews, A/B testing, and AI sentiment analysis.',
+      'I ran the engagement as project manager and client liaison — holding the timeline, assigning the work across five people, and acting as the rescue\'s single point of contact. Twelve weeks of structured research under the Double Diamond, then a rebuild on Weebly — deliberately the same platform, so the founder could maintain it unaided after handover. The site collapsed to four pages that carry real weight: Home, About, Adopt and Donate, with a lightweight calendar replacing the feature-heavy events section and every revenue path consolidated behind a single Donate call to action. The adoption flow was split in two: a short, friendly interest form first, with the long questionnaire held back until someone has been screened in. That cuts the effort asked of a casual enquirer and lets a small rescue spend its energy on likely matches. The superhero framing — every dog has a superpower, and its challenges are its kryptonite — came out of card sorting and runs through the whole build, because it makes browsing dogs feel warm rather than transactional while still setting honest expectations about what adoption demands.',
+    architectureLabel: 'RESEARCH & DESIGN PROCESS',
+    highlightsLabel: 'KEY CONTRIBUTIONS',
     architecture: {
-      frontend: 'Rebuilt on Weebly to match the client\'s existing environment for easy self-management post-launch. Custom color palette (Underdog Blue, Braveheart Blue, Forever Friend Pink) with Bree Serif and Poppins typography. Responsive design with clear visual hierarchy.',
-      backend: 'Weebly CMS with embedded Google Forms for adoption applications and PayPal/credit card integration for donations. Calendar widget for events. Contact form with direct email routing.',
-      database: 'N/A — Content managed through Weebly CMS. Adoption applications collected via Google Forms with automatic spreadsheet logging for the client.',
-      infrastructure: 'Hosted on Weebly at $13/month ($100/year). Google Forms for data collection. PayPal for donation processing. Social media integration (Instagram, Facebook). Best Friends Animal Society partner badge for credibility.',
+      research:
+        'The Double Diamond across twelve weeks. Discover built user portfolios for two audiences — first-time owners and veteran adopters — then user stories tracing each through the site to see where mental models broke. Define ran card sorting, which surfaced the superhero framing already latent in the founder\'s own vocabulary, and the comparative analysis I ran against Every Last One Rescue and New Jersey South Hills Pet Rescue. Those two were chosen as a deliberate high-versus-low pair rather than two good examples: one converts through prominent calls to action and emotionally resonant imagery, the other buries the same mission in informational text. The gap between them set the polish benchmark and decided which pages the rebuild would actually need.',
+      'brand system':
+        'A five-colour palette replacing the original Underdog Blue, white and black, each colour named to the mission rather than to its hue: Braveheart Blue #3454D1 for the main, the existing Underdog Blue #6ED6FF kept at the core so the brand stayed recognisable, Forever Friend Pink #FF487C, Soft Paws Silver #EFEFEF as an off-white, and Paw Print Navy #19225B standing in for black. Bree Serif carries headings for its bold, playful weight; Poppins takes body copy across several weights for hierarchy. Two graphics extend the superhero idea — a paw print drawn as an outline so type and imagery stay legible over it, and a bone dog-tag pattern acting as each dog\'s emblem, the way the S is to Superman.',
+      'site build':
+        'Weebly, chosen to match the environment the rescue already knew so the handover needed no retraining, at $13/month. Four core pages with a shared navigation bar and footer carrying contact details, social links and the Best Friends Animal Society partner badge for credibility. The Adopt page presents dogs in a grid that reveals each name on hover, opening onto profiles with vitals, a short narrative and the dog\'s assigned superpower. Donate groups one-time, monthly, Amazon wishlist and in-kind giving as scannable cards rather than a wall of text. Adoption interest routes through a Google Form into a shared drive, so applications land somewhere the rescue can actually triage.',
+      evaluation:
+        'Two parallel instruments, Hearts for the original site and Diamonds for the redesign, five participants each, capturing free-text experience, five-point Likert ratings across ease of use, navigation, clarity, trustworthiness and donation confidence, plus a direct donation-intent question. Open responses went through AI sentiment classification into positive, neutral and negative with polarity scores, then a manual thematic coding pass to explain why the numbers moved. Triangulating three methods was the point: with five participants per condition no single measure carries weight on its own.',
     },
     highlights: [
-      'Conducted mixed-methods UX research using the Double Diamond framework: user personas, card sorting, comparative analysis, founder interviews, A/B testing, and AI sentiment analysis',
-      'Redesign achieved +0.80 mean sentiment polarity (vs -0.20 for original) — 80% positive responses compared to 20% for the old site',
-      'Improved all Likert-scale metrics: ease of use (3.80→4.75), trustworthiness (3.00→4.00), and donation confidence (2.20→3.60)',
-      'Validated design decisions through quantitative A/B testing: 80% of redesign users expressed willingness to donate (vs 40% on original site)',
+      'Served as project manager and client liaison across the twelve weeks, holding the schedule and task allocation for a five-person team while being the single point of contact translating what the rescue needed into work the team could act on',
+      'Ran the comparative analysis that set the project\'s design benchmark, picking Every Last One Rescue and New Jersey South Hills Pet Rescue as a deliberate high-versus-low pair — the gap between a site that converts and one that merely informs defined both the target level of polish and which pages the rebuild actually needed',
+      'Built the brand system the redesign is drawn in: a five-colour palette that keeps the rescue\'s existing blue at its core while replacing black and white with Paw Print Navy and Soft Paws Silver, Bree Serif over Poppins for heading-to-body hierarchy, and two graphics — an outlined paw print and a bone dog-tag pattern — that carry the superhero framing into every surface',
+      'Wrote the A/B instruments and ran the evaluation that produced the project\'s headline numbers: mean sentiment polarity moved from -0.20 to +0.80, donation confidence from 2.20 to 3.60, trustworthiness from 3.00 to 4.00, and willingness to donate from 2 of 5 participants to 4 of 5',
+      'Turned the founder interview\'s central finding — that no adoption had ever come through the website — into structural change: every revenue path consolidated behind one Donate call to action, the abandoned shop retired, and the feature-heavy events section reduced to a calendar that still reads as complete when nothing is scheduled',
+      'Split the adoption flow into a short interest form ahead of the full questionnaire, so a casual enquirer faces a low-effort first step while the rescue screens early and spends its limited volunteer time on likely matches',
+      'Cut task-based usability testing from the final analysis rather than report it: run unmoderated, participants timed themselves inconsistently — some estimated, some kept timing past the task, some completed more than asked — and the data could not support the comparison it was collected for',
     ],
     challenges:
-      'The core tension was designing a site that screens potential adopters (UUR\'s adoption process is rigorous) without alienating non-adopters who might still donate or volunteer. We resolved this through the "Every Dog Has A Superpower" framing — the superhero branding makes browsing dogs feel inviting rather than transactional, while clear CTAs for Adopt, Donate, and Volunteer give every user type a path forward. A practical challenge was the small sample size (n=5 per condition) for A/B testing, which limited statistical power. We compensated by triangulating across sentiment analysis, Likert scales, and qualitative thematic analysis.',
+      'The core design tension was screening versus welcome. UUR\'s adoption process is deliberately rigorous, and it should be, but a site that leads with scrutiny turns away the visitor who was never going to adopt and might have donated or volunteered. The superhero framing resolved it: browsing dogs stays warm and specific while the copy is honest that adoption asks for patience and resilience, and separate paths for Adopt, Donate and Volunteer mean no visitor is funnelled somewhere they do not belong. The harder problem was evidentiary. Task-based usability testing was planned, collected, and then excluded, because unmoderated participants did not time themselves in any consistent way — and with only five participants per condition, a handful of malformed responses was enough to make the whole measure meaningless. What survived is self-reported rather than behavioural, drawn from an RPI student sample that is not the rescue\'s real audience, so the findings are triangulated across three methods rather than rested on any one. A live deployment with behavioural analytics is what would actually confirm them.',
     results:
-      'Delivered a production-ready Weebly site with measurable UX improvements across every tested dimension. Donation confidence increased by 64% (2.20→3.60). Qualitative feedback shifted from "confusing" and "outdated" to "intuitive," "smooth," and "visually appealing." Site designed for client self-management at $100/year.',
+      'A production-ready Weebly site the rescue can maintain itself for $100 a year, improving on the original across every dimension tested. Mean sentiment polarity moved from -0.20 to +0.80, with 80% of responses to the redesign positive against 20% for the original. Ease of use rose 3.80 to 4.75, navigation 4.00 to 4.60, clarity 4.20 to 4.40, trustworthiness 3.00 to 4.00, and donation confidence 2.20 to 3.60 — a 64% gain on the measure that matters most to a rescue funded by small gifts. Willingness to donate went from 2 of 5 participants to 4 of 5, with none unwilling. Qualitative feedback moved from "confusing" and "outdated" to "intuitive", "smooth" and "visually appealing". All figures come from five participants per condition and are reported as directional, not conclusive.',
     images: [
+      // Two landscape captures lead so the first row matches; the portraits follow.
       '/images/projects/uur/home.png',
+      '/images/projects/uur/get-involved.png',
       '/images/projects/uur/about.png',
       '/images/projects/uur/donate.png',
       '/images/projects/uur/events.png',
-      '/images/projects/uur/get-involved.png',
+    ],
+    documents: [
+      {
+        label: 'Website Redesign: A Usability Study',
+        description:
+          'The full twelve-week study — Double Diamond methodology, user portfolios and stories, card sorting, the comparative analysis, the brand artifacts, and every results table behind the figures above, including the limitations section. Written with the four other team members; I am listed first author.',
+        file: '/documents/upstate-underdog/website-redesign-study.pdf',
+        meta: '35 pages · PDF',
+      },
+      {
+        label: 'UX Research Proposal',
+        description:
+          'The plan the engagement was scoped against, written at the outset: the problem statement, the mixed-methods research design, technical and accessibility constraints, the phased timeline, and the team roles. Worth reading against the study above — the scope narrowed considerably once the founder interview landed.',
+        file: '/documents/upstate-underdog/ux-research-proposal.pdf',
+        meta: '6 pages · PDF',
+      },
     ],
   },
   {
