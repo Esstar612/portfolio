@@ -153,7 +153,8 @@ export const projects: Project[] = [
     featured: true,
     year: '2026',
     links: {
-      live: '/cathedral-demo/showcase.html',
+      live: 'https://esstar612.github.io/Cathedral_Demo/showcase.html',
+      github: 'https://github.com/Esstar612/Cathedral_Demo',
     },
     problem:
       'The Cathedral of All Saints is the first Episcopal cathedral in the United States and a working parish running ESL classes, AA meetings and a Loaves & Fishes partnership out of a National Register building in Albany. Its technology had grown ad hoc rather than by design: a Verizon mobile hotspot carried the worship livestream, files lived across two personal Dropbox accounts, Google Drive and individual staff computers, and online giving ran through four platforms that did not talk to each other. The website was the most visible symptom — ten top-level navigation headings, a homepage that was one long scroll, giving content scattered across three unrelated sections, and more than forty abandoned unlinked pages in the backend. Asked what the single most important thing a visitor should be able to do, the client answered without hesitation: find the upcoming events. The site made that unnecessarily hard. Five employees, two interns, no technical staff, and a governing Great Chapter whose approval every significant expenditure requires.',
