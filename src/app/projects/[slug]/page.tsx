@@ -79,7 +79,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           ))}
 
           <div>
-            <h2 className="mb-6 text-xs font-semibold uppercase tracking-[0.1em] text-theme-fg-dim">TECHNICAL ARCHITECTURE</h2>
+            <h2 className="mb-6 text-xs font-semibold uppercase tracking-[0.1em] text-theme-fg-dim">{project.architectureLabel ?? 'TECHNICAL ARCHITECTURE'}</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               {(Object.entries(project.architecture) as [string, string][]).map(([layer, detail]) => (
                 <div key={layer} className="rounded-2xl p-5" style={{ border: '1px solid var(--color-border)' }}>
@@ -91,7 +91,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           </div>
 
           <div>
-            <h2 className="mb-4 text-xs font-semibold uppercase tracking-[0.1em] text-theme-fg-dim">KEY ENGINEERING HIGHLIGHTS</h2>
+            <h2 className="mb-4 text-xs font-semibold uppercase tracking-[0.1em] text-theme-fg-dim">{project.highlightsLabel ?? 'KEY ENGINEERING HIGHLIGHTS'}</h2>
             <ul className="space-y-3">
               {project.highlights.map((item, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-theme-fg-muted">
@@ -115,7 +115,8 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           {project.documents && project.documents.length > 0 && (
             <div>
               <h2 className="mb-6 text-xs font-semibold uppercase tracking-[0.1em] text-theme-fg-dim">DELIVERABLES</h2>
-              <div className="grid gap-4 sm:grid-cols-2">
+              {/* A lone document spans the row rather than leaving half of it empty. */}
+              <div className={project.documents.length === 1 ? 'grid gap-4' : 'grid gap-4 sm:grid-cols-2'}>
                 {project.documents.map((doc) => (
                   <a
                     key={doc.file}
