@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, ArrowUpRight, FileText, Github, Smartphone } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, FileText, Github, Lock, Smartphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tag } from '@/components/ui/tag';
 import { Section } from '@/components/ui/section';
@@ -56,6 +56,14 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             <Button href={project.links.github} variant="secondary" external><Github className="h-4 w-4" /> View Source</Button>
           )}
         </div>
+
+        {/* Stands in for a View Source button the project cannot offer */}
+        {project.sourceNote && (
+          <p className="mt-5 flex max-w-2xl items-start gap-2 text-sm text-theme-fg-muted">
+            <Lock className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-theme-fg-dim" aria-hidden />
+            {project.sourceNote}
+          </p>
+        )}
       </section>
 
       {/* Hero image */}

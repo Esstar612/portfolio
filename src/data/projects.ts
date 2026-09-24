@@ -19,6 +19,12 @@ export interface Project {
     github?: string;
     caseStudy?: string;
   };
+  /**
+   * Shown under the action buttons where there is no public repo to link.
+   * The university team repos are internal to RPI's GitHub org, so their URLs
+   * 404 for anyone outside it — better to say so than to ship a dead link.
+   */
+  sourceNote?: string;
   // Case study fields
   problem: string;
   solution: string;
@@ -293,6 +299,8 @@ export const projects: Project[] = [
     links: {
       live: 'https://esstar612.github.io/bored/',
     },
+    sourceNote:
+      'Source lives in a private RPI course repository and can be shared on request. The authentication system described below sits on a feature branch there, so the public demo build runs an earlier version of it.',
     problem:
       'When people are bored, they waste time deciding what to do rather than actually doing something. Generic recommendation engines don\'t account for personal taste, current weather, or location. Users end up cycling through the same activities instead of discovering new ones tailored to their interests and context.',
     solution:
@@ -374,6 +382,8 @@ export const projects: Project[] = [
     links: {
       live: 'https://esstar612.github.io/travercity-demo/',
     },
+    sourceNote:
+      'Source lives in a private RPI course repository and can be shared on request. The live link is a static capture of the site, since the original runs on PHP and MySQL.',
     problem:
       'Planning international travel requires piecing together information from dozens of sources — country guides, restaurant reviews, activity recommendations, and fellow travelers\' experiences. No single platform combines structured country information with real local business data and a community layer for sharing first-hand travel insights.',
     solution:
