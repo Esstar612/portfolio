@@ -3,7 +3,7 @@
  * Each project includes metadata for cards AND full case study content.
  */
 
-export interface Project {
+interface ProjectSummary {
   slug: string;
   title: string;
   tagline: string;
@@ -25,7 +25,10 @@ export interface Project {
    * 404 for anyone outside it — better to say so than to ship a dead link.
    */
   sourceNote?: string;
-  // Case study fields
+}
+
+export interface StandardProject extends ProjectSummary {
+  layout?: 'standard';
   problem: string;
   solution: string;
   /**
@@ -57,6 +60,13 @@ export interface Project {
     meta: string;
   }[];
 }
+
+/** Renders its own case study component instead of the shared template. */
+export interface CustomProject extends ProjectSummary {
+  layout: 'custom';
+}
+
+export type Project = StandardProject | CustomProject;
 
 export const projects: Project[] = [
   {
@@ -103,12 +113,13 @@ export const projects: Project[] = [
   },
   {
     slug: 'favorite-places',
+    layout: 'custom',
     title: 'Favorite Places',
-    tagline: 'Cross-platform app for saving places, with AI that summarises your notes and searches by meaning.',
+    tagline: 'Save the places you love, then ask a tool-calling agent to plan an outing from them. Every deploy is gated on 192 scored eval runs.',
     description:
-      'One Flutter codebase shipping to Android and the browser, backed by an Express API on Cloud Run and Firebase. Google Gemini turns freeform notes into structured summaries, suggests tags from a place\'s photo, and answers natural-language searches like "somewhere quiet to work". Try it as a guest — no sign-up — in a private sandbox pre-loaded with sample places.',
-    tags: ['Flutter', 'Dart', 'Firebase', 'Google Gemini AI', 'Node.js', 'Cloud Run'],
-    thumbnail: '/images/projects/favorite-places/thumbnail-mockup.jpg',
+      'A Flutter app for Android and the web, rebuilt around an outing planner: a Python agent on FastAPI and LangGraph that runs on Claude or GPT behind one provider interface, reads only your own saved places, asks one clarifying question when a request is vague, and shows every tool call it made. An eval suite in LangSmith scores tool use and answers on both providers before every Cloud Run deploy.',
+    tags: ['Flutter', 'Python', 'LangGraph', 'FastAPI', 'LangSmith', 'Claude', 'OpenAI', 'Gemini', 'Firebase', 'Cloud Run', 'GitHub Actions'],
+    thumbnail: '/images/projects/favorite-places/v2-cover.jpg',
     featured: true,
     year: '2026',
     links: {
@@ -116,36 +127,6 @@ export const projects: Project[] = [
       androidDemo: 'https://appetize.io/app/b_3ngeiuwtjjg7qmxhieybnpzq4u',
       github: 'https://github.com/Esstar612/FavoritePlaces',
     },
-    problem:
-      'People visit places worth remembering and end up with the context scattered — photos in the camera roll, notes in a notes app, the location bookmarked somewhere else. What you actually want back months later is not the address but why you liked it, and nobody writes that down in a form they can retrieve. Keyword search does not help either: search "art" across your own saved places and you match T-art-ine Bakery long before you find the museum.',
-    solution:
-      'Favorite Places stores places with photos, notes, ratings, tags and categories, synced live through Firestore. Gemini does the retrieval work keyword search cannot: Smart Summary rewrites raw notes into why you liked it, tips, and best time to go; tag suggestions come from the place name and category, plus Cloud Vision analysis when a photo exists; and natural-language search matches on meaning, so "art" returns SFMOMA rather than Tartine. One Flutter codebase ships to Android and the web, and guest mode gives any visitor an isolated sandbox seeded with sample places — no sign-up, no email.',
-    architecture: {
-      frontend: 'Flutter 3.38 and Dart 3.10 with Riverpod for state and Material 3, shipping to Android and the browser from one codebase. Cloud Firestore snapshot listeners keep data live. Google Maps for the picker, with Places autocomplete and an initial camera on the user\'s location. Places with no photo fall back to a static map of where they are rather than a grey placeholder. Light and dark themes persisted per account. 25 unit tests cover model parsing, cached-summary invalidation, and the display helpers that once crashed the profile screen on an empty display name.',
-      backend: 'Node.js 20 on Express, deployed to Cloud Run as an Alpine container. It exists for more than proxying the model: it verifies a Firebase ID token on every /ai, /user and /maps route, rate-limits per IP with trust proxy set so Cloud Run\'s load balancer does not collapse every caller into one bucket, and holds the Gemini and Geocoding keys server-side — the Geocoding API rejects HTTP-referrer-restricted keys outright, so a browser cannot call it safely at all. Helmet headers, a CORS allowlist, input validation and payload caps.',
-      database: 'Cloud Firestore for places, profiles, settings and stats, with Firebase Storage for photos and a composite index backing the places query. Security rules are versioned in the repo and scope every document and file to its owner — including on create, so a place cannot be written under someone else\'s ID. Guest accounts get an isolated sandbox seeded with sample places and deleted on sign-out. Any user can export everything as JSON or delete the account and all its data.',
-      infrastructure: 'GitHub Actions builds and deploys the web app to Firebase Hosting and the Android APK to Appetize on every push to main, running the Flutter tests first. Cloud Run for the API, Secret Manager for keys. Four separate Google Maps keys, because a Google API key carries only one application restriction and the app calls Maps from four surfaces with different identities. Everything sits inside free tiers.',
-    },
-    highlights: [
-      'Built natural-language search on Gemini that matches meaning rather than substrings — the query "art" returns SFMOMA instead of T-art-ine Bakery — alongside Smart Summaries that turn freeform notes into why I liked it, tips and best time to go, cached so revisiting a place does not re-run the model',
-      'Shipped one Flutter codebase to Android and the browser, with a guest mode that hands any visitor a private sandbox seeded with sample places, making the web build a demo anyone can try without an account',
-      'Designed the Cloud Run backend around key custody rather than convenience: Gemini and Geocoding keys never reach a client, and the client-side Maps keys are each scoped to a single surface because a Google key carries only one application restriction',
-      'Wrote Firestore and Storage rules that scope every document and file to its owner including on create, and shipped JSON data export plus full account deletion alongside them',
-      'Automated CI/CD through GitHub Actions — web to Firebase Hosting, APK to Appetize on every push to main — gated by 25 Flutter unit tests, all inside free tiers at $0/month',
-    ],
-    challenges:
-      'The API key model was the most unexpected constraint. A Google API key can carry only one application restriction, and this app calls Maps from four places with different identities: the Android SDK, the web build, REST calls from the phone, and server-side geocoding. That forced four separately scoped keys — and the mobile REST key is the one that genuinely cannot be locked to an application, because REST calls from a phone carry neither a package identity nor a referrer for a key to be restricted against, so it is limited by API and quota cap instead. Choosing a demo surface was the other trade-off. Appetize\'s free tier caps sessions at three minutes with one viewer at a time, and its emulated device cannot run the Google Maps SDK, so "Select on Map" fails there. The web build became the primary demo and the Android build stayed on as a secondary link.',
-    results:
-      'Live on Firebase Hosting with a no-sign-up guest demo, plus the Android build on Appetize. Full CRUD with live Firestore sync, three Gemini-backed AI features, email/Google/guest auth, per-account themes, JSON export and account deletion. 25 unit tests run in CI before every deploy. Runs inside free tiers at $0/month.',
-    images: [
-      '/images/projects/favorite-places/places-list.jpg',
-      '/images/projects/favorite-places/ai-search.jpg',
-      '/images/projects/favorite-places/place-detail.jpg',
-      '/images/projects/favorite-places/place-detail-ai.jpg',
-      '/images/projects/favorite-places/add-place.jpg',
-      '/images/projects/favorite-places/map-picker.jpg',
-      '/images/projects/favorite-places/profile.jpg',
-    ],
   },
   {
     slug: 'cathedral-of-all-saints',
