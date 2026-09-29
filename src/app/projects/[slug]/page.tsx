@@ -9,6 +9,11 @@ import { Section } from '@/components/ui/section';
 import { getProjectBySlug, getAllProjectSlugs } from '@/data/projects';
 import { createMetadata } from '@/lib/metadata';
 import { getImageSize } from '@/lib/image-size';
+import { FavoritePlacesCaseStudy } from '@/components/case-studies/favorite-places';
+
+const customCaseStudies = {
+  'favorite-places': FavoritePlacesCaseStudy,
+};
 
 export function generateStaticParams() {
   return getAllProjectSlugs().map((slug) => ({ slug }));
@@ -23,6 +28,12 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 export default function ProjectPage({ params }: { params: { slug: string } }) {
   const project = getProjectBySlug(params.slug);
   if (!project) notFound();
+
+  if (project.layout === 'custom') {
+    const CaseStudy = customCaseStudies[project.slug as keyof typeof customCaseStudies];
+    if (!CaseStudy) notFound();
+    return <CaseStudy project={project} />;
+  }
 
   return (
     <div className="page-enter">
