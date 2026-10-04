@@ -11,10 +11,12 @@ import { createMetadata } from '@/lib/metadata';
 import { getImageSize } from '@/lib/image-size';
 import { FavoritePlacesCaseStudy } from '@/components/case-studies/favorite-places';
 import { ClauseReviewCaseStudy } from '@/components/case-studies/clause-review';
+import { TheNewspaperCaseStudy } from '@/components/case-studies/the-newspaper';
 
 const customCaseStudies = {
   'favorite-places': FavoritePlacesCaseStudy,
   'clause-review': ClauseReviewCaseStudy,
+  'the-newspaper': TheNewspaperCaseStudy,
 };
 
 export function generateStaticParams() {

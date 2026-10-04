@@ -87,45 +87,19 @@ export const projects: Project[] = [
   },
   {
     slug: 'the-newspaper',
+    layout: 'custom',
     title: 'The Newspaper',
-    tagline: 'An editorial front page for news, markets and weather — built to survive its own data providers.',
+    tagline: 'A front page for the New York Times and the BBC that answers questions with cited sources, measured on a labelled eval before it shipped.',
     description:
-      'A news platform that reads eleven per-section NYT and BBC RSS feeds daily, pairs them with a markets watchlist and a weather dashboard, and is engineered so a dead feed or a blocked API degrades visibly instead of quietly emptying the site — all inside free tiers at $0/month.',
-    tags: ['Next.js', 'TypeScript', 'MongoDB', 'RSS', 'Recharts', 'Vercel', 'React'],
-    thumbnail: '/images/projects/newspaper/front-page.jpg',
+      'Ask the news a question and get an answer built only from the coverage, with every claim linked to its article. Retrieval in Pinecone, answers from Claude with citations checked in code, follow-up threads, and a related-stories cutoff chosen on labelled data. 362 unit tests, Playwright on three browser engines, and Datadog monitors that caught a real failure.',
+    tags: ['Next.js', 'TypeScript', 'RAG', 'Pinecone', 'Claude', 'MongoDB', 'Playwright', 'Vitest', 'Datadog', 'GitHub Actions', 'Vercel'],
+    thumbnail: '/images/projects/newspaper/ask-answer.jpg',
     featured: true,
     year: '2026',
     links: {
       live: 'https://newspaper-kohl.vercel.app',
       github: 'https://github.com/Esstar612/newspaper',
     },
-    problem:
-      'Staying informed means moving between a news site, a markets app and a weather app. Building one place that does all three sounds simple until the data providers get in the way. NewsAPI\'s free tier rejects requests from deployed origins, so it contributed nothing in production while appearing to work locally. The NYT API allows five requests a minute and answers overflow with HTTP 200 and a fault body, so failures were indistinguishable from empty results. The market data provider permits one active IP per account and states that serverless platforms are unsupported — which is exactly what this runs on.',
-    solution:
-      'The Newspaper reads eleven per-section RSS feeds from the New York Times and the BBC: keyless, unmetered, and where the feed requested is the category, so nothing has to be inferred. Roughly 450 articles arrive daily and deduplicate to ~400 unique, laid out as a front page — a lead story, a feature grid, then an "In brief" column set — rather than a uniform grid of cards. The markets page serves its price chart from MongoDB instead of a live API, so it keeps working through provider outages, and the weather dashboard adds Recharts visualisations over OpenWeatherMap. Full-text search, cursor-based pagination, and light and dark themes throughout.',
-    architecture: {
-      frontend: 'Next.js 16 with the App Router and React Server Components, TypeScript throughout, Tailwind CSS on a real type scale. Newsreader for serif headlines over Geist for the sans UI, with three article weights — lead, feature, and a compact "In brief" set — so a page reads as a front page rather than a grid. Every colour routed through CSS custom properties, with light and dark themes that follow the OS by default and remember an explicit choice. All text clears WCAG AA contrast in both themes; tabs are keyboard-navigable, focus rings visible, and prefers-reduced-motion is respected. Recharts for the weather and price visualisations.',
-      backend: 'Next.js API Routes as serverless functions. Three daily Vercel cron jobs: RSS ingestion at 00:00 UTC, which fetches eleven feeds in parallel and returns per-feed counts so a dead feed is visible rather than silently empty; price-history refresh at 02:00 UTC, deliberately sequential so all ten calls leave one invocation on one outbound IP; and a guarded retention cleanup at 03:00 UTC. Quotes are cached at three levels — a five-minute server-side route cache matching the provider\'s block window, a localStorage cache shared by the front-page ticker and the watchlist, and a stale-payload fallback that shows last known prices during an outage.',
-      database: 'MongoDB Atlas with Mongoose. Articles carry a tags array of every section they were ingested under, so a story appearing in two feeds keeps both instead of one overwriting the other. Unique index on url for deduplication, plus compound indexes on publishedAt, source + publishedAt, and tags + publishedAt — the last of which the category tabs would otherwise scan the whole collection for. A CandleSeries document per symbol holds about 250 daily closes, so 1M/3M/6M/1Y are slices of one document rather than four separate lookups.',
-      infrastructure: 'Vercel with automatic builds from GitHub and three cron schedules declared in vercel.json. MongoDB Atlas free tier. NYT and BBC RSS (keyless, unmetered), OpenWeatherMap for weather, forecast and both forward and reverse geocoding, Market Data for quotes and daily candles, Frankfurter for currency conversion. Every service stays inside its free allowance: bulk quotes bill at zero credits, and the five-minute cache caps upstream requests regardless of traffic. Total monthly cost: $0.',
-    },
-    highlights: [
-      'Replaced a news-API pipeline with eleven per-section RSS feeds after the API version proved unfixable in production — NewsAPI rejects deployed origins, and the NYT API returns rate-limit failures as HTTP 200 — gaining a keyless, unmetered source where the feed requested is the category',
-      'Moved stock price history into MongoDB behind a daily sequential cron, so ten upstream calls leave one serverless invocation on one IP, satisfying a provider that permits one active IP and does not support serverless — every chart read is then a local database query',
-      'Built retention cleanup that can refuse to run: it holds if nothing has been ingested for 48 hours and never drops below a 120-article floor, because cron delivery is best-effort and a naive age cutoff would empty the database within a week of ingestion breaking',
-      'Implemented compound-cursor pagination over publishedAt + _id so ties at a page boundary neither skip nor repeat articles, with full-text search scoped to the active section and section state held in the URL so a refresh or shared link lands in the same place',
-      'Shipped light and dark themes on CSS custom properties with all text clearing WCAG AA contrast in both, keyboard-navigable tabs, visible focus rings, and prefers-reduced-motion support',
-    ],
-    challenges:
-      'Almost every interesting decision here came from a provider constraint rather than a preference. The original build used NewsAPI and the NYT Top Stories API, and both failed in ways that looked like success: NewsAPI silently returned nothing from a deployed origin, and the NYT API answered rate-limit overflow with HTTP 200 and a fault body. Per-section RSS fixed both and removed the category-guessing the API version had needed. The market data provider was the opposite problem — one active IP per account and serverless explicitly unsupported — so fetching history per request meant forty upstream calls from scattered IPs. Storing a year of closes in MongoDB behind one daily sequential cron cut that to ten calls from one IP and made the chart immune to provider outages. The subtlest issue was retention: cleanup and ingestion are separate best-effort jobs, so cleanup had to be able to decide not to run at all.',
-    results:
-      'Live in production with ~400 unique articles a day across seven sections, a ten-symbol watchlist with conversion into 30+ currencies, and a five-day weather dashboard with geolocation. When the quote provider blocks a request the page degrades to last known prices and says so, while the price chart keeps working because its data is local. Runs entirely inside free tiers at $0/month.',
-    images: [
-      '/images/projects/newspaper/front-page.jpg',
-      '/images/projects/newspaper/news-page.jpg',
-      '/images/projects/newspaper/stocks-page.jpg',
-      '/images/projects/newspaper/weather-page.jpg',
-    ],
   },
   {
     slug: 'favorite-places',
