@@ -70,6 +70,22 @@ export type Project = StandardProject | CustomProject;
 
 export const projects: Project[] = [
   {
+    slug: 'clause-review',
+    layout: 'custom',
+    title: 'Clause Review',
+    tagline: 'Six contract-clause classifiers, compared under rules written before the results existed, and a live review tool that serves the two that run locally.',
+    description:
+      'A contract review aid that flags 33 clause types for a lawyer to check. Behind it: six models compared on CUAD’s lawyer-labeled contracts, scored on 124 held-out contracts with pre-registered rules and contract-level intervals, and a deployment verified to reproduce the evaluated predictions flag for flag.',
+    tags: ['Python', 'PyTorch', 'Hugging Face', 'LLM evaluation', 'Claude', 'Gemini', 'FastAPI', 'Docker', 'Cloud Run', 'GKE'],
+    thumbnail: '/images/projects/clause-review/results.jpg',
+    featured: true,
+    year: '2026',
+    links: {
+      live: 'https://clause-review-alpha.vercel.app',
+      github: 'https://github.com/Esstar612/cuad-clause-classifier',
+    },
+  },
+  {
     slug: 'the-newspaper',
     title: 'The Newspaper',
     tagline: 'An editorial front page for news, markets and weather — built to survive its own data providers.',

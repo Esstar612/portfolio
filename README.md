@@ -1,6 +1,6 @@
 # Star Olaojo — Portfolio
 
-Source for my personal portfolio: a Next.js 14 site presenting six projects as
+Source for my personal portfolio: a Next.js 14 site presenting eight projects as
 full case studies rather than screenshot galleries — the problem each one
 solved, how it was architected, what broke along the way, and what shipped.
 
@@ -18,8 +18,8 @@ studies render from the same objects, so they can't drift apart.
 defined in `globals.css`. A portfolio that ships 40 kB of JavaScript to animate
 a fade-in is arguing against its own author. First-load JS is ~101 kB total.
 
-**Static by default.** All 16 routes are prerendered at build time, including
-the six project pages via `generateStaticParams`. The only dynamic route is the
+**Static by default.** Every page is prerendered at build time, including
+the project pages via `generateStaticParams`. The only dynamic route is the
 contact API. There is no client-side data fetching anywhere.
 
 **Neutral palette.** No accent color competing with the project screenshots.
@@ -43,6 +43,7 @@ resolved before paint.
 
 | Project | What it is | Stack |
 |---|---|---|
+| [Clause Review](https://clause-review-alpha.vercel.app) | Contract review aid flagging 33 clause types, built on a pre-registered comparison of six models and a deployment verified flag for flag against the evaluation | Python, PyTorch, LLM APIs, FastAPI, Cloud Run, GKE |
 | [The Newspaper](https://newspaper-kohl.vercel.app) | Editorial news front page reading ~400 articles/day from NYT and BBC RSS, with markets and weather dashboards — running at $0/month | Next.js, MongoDB Atlas, Vercel Cron, Recharts |
 | [Favorite Places](https://favorite-places-app-94adb.web.app) | Cross-platform app for saving places, with Gemini summaries and search-by-meaning ([Android build](https://appetize.io/app/b_3ngeiuwtjjg7qmxhieybnpzq4u)) | Flutter, Dart, Firebase, Cloud Run |
 | [Upstate Underdog Rescue](https://upstateunderdog.weebly.com/) | Site for a dog rescue nonprofit | Web |

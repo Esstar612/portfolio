@@ -10,9 +10,11 @@ import { getProjectBySlug, getAllProjectSlugs } from '@/data/projects';
 import { createMetadata } from '@/lib/metadata';
 import { getImageSize } from '@/lib/image-size';
 import { FavoritePlacesCaseStudy } from '@/components/case-studies/favorite-places';
+import { ClauseReviewCaseStudy } from '@/components/case-studies/clause-review';
 
 const customCaseStudies = {
   'favorite-places': FavoritePlacesCaseStudy,
+  'clause-review': ClauseReviewCaseStudy,
 };
 
 export function generateStaticParams() {
