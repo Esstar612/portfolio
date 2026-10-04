@@ -393,7 +393,7 @@ export function TheNewspaperCaseStudy({ project }: { project: CustomProject }) {
             <Heading>Plans reviewed before code, tests that are proven to catch bugs</Heading>
             <ul className="mt-8 space-y-4">
               {[
-                'Every feature started as a written plan. A separate reviewer agent checked it against the code, and nothing was built until it approved, often after two or three rounds. Two of the six failures below were caught there; the eval and browser checks found the rest.',
+                'Every feature started as a written plan. A separate reviewer agent checked it against the code, and nothing was built until it approved, often after two or three rounds. Two of the six failures above were caught there; the eval and browser checks found the rest.',
                 'Tests came first and were seen failing. Before a change shipped, its key guards were removed on purpose to prove a test would fail without them.',
                 '362 unit tests across 28 files with Vitest, React Testing Library and MSW, which stands in for every outside API. 22 Playwright flows run against a production build and a seeded MongoDB, and fail if any request leaves the site.',
                 'GitHub Actions runs the type check, lint, unit tests and the Playwright suite on Chromium, Firefox and an iPhone profile for every pull request. A second model reviews each diff against the plan before it ships.',
