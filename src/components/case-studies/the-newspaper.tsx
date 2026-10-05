@@ -54,6 +54,28 @@ const tour = [
   { src: `${IMG}/weather.jpg`, caption: 'Weather: search a city or use your location for current conditions and a 5-day forecast of temperature and humidity.' },
 ];
 
+const pages = [
+  {
+    title: 'Markets',
+    points: [
+      'A watchlist of ten stocks from marketdata.app. Quotes are cached for five minutes on the server and in the browser, so a return visit shows prices at once and refreshes them in the background.',
+      'When the provider fails, the page shows the last known prices under a banner, or a retry button when there are none. The chart reads stored history, so it keeps working through the outage.',
+      'Price history from one month to one year, saved to MongoDB by a nightly job that fetches the ten symbols one at a time.',
+      'Prices convert to any currency Frankfurter lists, with nine common ones as a fallback. The ticker on the front page reuses the same cached quotes.',
+      'Four Playwright flows cover it, including a quote outage that must leave the chart on screen.',
+    ],
+  },
+  {
+    title: 'Weather',
+    points: [
+      'OpenWeatherMap behind server routes, so the API key never reaches the browser.',
+      'City search suggests up to five places as you type. With location permission, the page loads your local weather on arrival and names the place by reverse geocoding.',
+      'Current conditions with the local time, then five-day charts of temperature and humidity and a breakdown of conditions.',
+      'Six tests on the weather route and two Playwright flows: searching for a city, and loading with location granted.',
+    ],
+  },
+];
+
 const failures = [
   {
     title: 'Telling Claude the date made answers worse',
@@ -345,6 +367,21 @@ export function TheNewspaperCaseStudy({ project }: { project: CustomProject }) {
               <Shot src={t.src} alt={t.caption} sizes="(max-width: 768px) 100vw, 530px" />
               <figcaption className="mt-4 text-sm leading-relaxed text-theme-fg-muted">{t.caption}</figcaption>
             </figure>
+          ))}
+        </div>
+        <div className="mt-12 grid gap-4 md:grid-cols-2">
+          {pages.map((p) => (
+            <div key={p.title} className={card} style={cardStyle}>
+              <h3 className="text-sm font-semibold text-theme-fg">{p.title}</h3>
+              <ul className="mt-3 space-y-2.5">
+                {p.points.map((point) => (
+                  <li key={point} className="flex gap-3 text-sm leading-relaxed text-theme-fg-muted">
+                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-theme-accent" aria-hidden />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
         </div>
       </section>
