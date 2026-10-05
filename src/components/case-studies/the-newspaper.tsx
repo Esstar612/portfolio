@@ -47,31 +47,50 @@ const followups = [
   { label: 'Joined with the previous question', recall: 0.917, mrr: 0.611 },
 ];
 
-const tour = [
-  { src: `${IMG}/home.jpg`, caption: 'The front page: the newest story with a picture leads, then nine features, with the rest in brief and a markets strip under the date.' },
-  { src: `${IMG}/ask-suggestions.jpg`, caption: 'News: typing lists matching headlines under an "Ask" option. Arrow keys move, Enter asks, and the When filter narrows search and Ask to the past week, month or year.' },
-  { src: `${IMG}/markets.jpg`, caption: 'Markets: a watchlist and a price chart served from MongoDB, so the chart keeps working when the quote provider refuses a request.' },
-  { src: `${IMG}/weather.jpg`, caption: 'Weather: search a city or use your location for current conditions and a 5-day forecast of temperature and humidity.' },
-];
-
 const pages = [
   {
-    title: 'Markets',
+    title: 'Home',
+    src: `${IMG}/home.jpg`,
+    alt: 'The Newspaper front page in light mode: the masthead and date, a markets ticker, a lead story and feature cards',
+    summary: 'A printed front page, rebuilt every visit from the database.',
     points: [
-      'A watchlist of ten stocks from marketdata.app. Quotes are cached for five minutes on the server and in the browser, so a return visit shows prices at once and refreshes them in the background.',
-      'When the provider fails, the page shows the last known prices under a banner, or a retry button when there are none. The chart reads stored history, so it keeps working through the outage.',
-      'Price history from one month to one year, saved to MongoDB by a nightly job that fetches the ten symbols one at a time.',
-      'Prices convert to any currency Frankfurter lists, with nine common ones as a fallback. The ticker on the front page reuses the same cached quotes.',
-      'Four Playwright flows cover it, including a quote outage that must leave the chart on screen.',
+      'The 22 newest stories: the newest one with a picture leads, then nine features and twelve in brief. A story without a photo never leads; it goes to the text column.',
+      'A markets ticker under the date, linking to the Markets page.',
+      'Rendered on the server from MongoDB on each request, so it shows whatever last night’s ingest brought in.',
+    ],
+  },
+  {
+    title: 'News',
+    src: `${IMG}/ask-suggestions.jpg`,
+    alt: 'The News page with the search box open: an Ask option above five matching headlines',
+    summary: 'Seven sections, one box that searches and answers.',
+    points: [
+      'Top Stories, World, Business, Technology, Science, Health and Sports, from eleven New York Times and BBC RSS feeds kept for a year. The section lives in the URL, and arrow keys move between tabs.',
+      'Typing lists matching headlines; Enter asks the question and returns a cited answer with related stories, covered in detail below.',
+      'The When filter narrows search and Ask to the past week, month or year. Stories load 20 at a time with no duplicates.',
+    ],
+  },
+  {
+    title: 'Markets',
+    src: `${IMG}/markets.jpg`,
+    alt: 'The Markets page in light mode: an Apple price chart over three months beside a watchlist of ten stocks',
+    summary: 'A watchlist and price charts that survive a provider outage.',
+    points: [
+      'Ten stocks from marketdata.app. Quotes are cached for five minutes on the server and in the browser, so a return visit shows prices at once and refreshes them in the background.',
+      'When the provider fails, the page shows the last known prices under a banner, or a retry button when there are none. The chart reads stored history, so it keeps working.',
+      'One month to one year of price history, saved to MongoDB by a nightly job. Prices convert to any currency Frankfurter lists.',
+      'Four Playwright flows, including a quote outage that must leave the chart on screen.',
     ],
   },
   {
     title: 'Weather',
+    src: `${IMG}/weather.jpg`,
+    alt: 'The Weather page for London: current conditions, then temperature and humidity forecast charts',
+    summary: 'Any city, or wherever you are.',
     points: [
-      'OpenWeatherMap behind server routes, so the API key never reaches the browser.',
       'City search suggests up to five places as you type. With location permission, the page loads your local weather on arrival and names the place by reverse geocoding.',
       'Current conditions with the local time, then five-day charts of temperature and humidity and a breakdown of conditions.',
-      'Six tests on the weather route and two Playwright flows: searching for a city, and loading with location granted.',
+      'OpenWeatherMap sits behind server routes, so the API key never reaches the browser. Six tests on the weather route and two Playwright flows cover it.',
     ],
   },
 ];
@@ -254,7 +273,7 @@ export function TheNewspaperCaseStudy({ project }: { project: CustomProject }) {
       <Section divider className="py-16 md:py-20">
         <div className="mx-auto max-w-3xl space-y-20">
           <div className="space-y-4 text-lg leading-relaxed text-theme-fg">
-            <p>The Newspaper is a front page for the New York Times and the BBC that you can ask questions, and every answer shows the articles it came from.</p>
+            <p>The Newspaper is a news site built on the New York Times and the BBC, with markets and weather pages beside it. You can ask its news pages a question, and every answer shows the articles it came from.</p>
             <p className="text-base text-theme-fg-muted">
               Behind the box is a retrieval pipeline measured on a labelled set before it shipped: which model answers, how follow-ups search, and which related stories appear were each decided by a number, not a demo.
             </p>
@@ -268,9 +287,45 @@ export function TheNewspaperCaseStudy({ project }: { project: CustomProject }) {
               </div>
             ))}
           </dl>
+        </div>
+      </Section>
 
+      <section className="mx-auto max-w-[1100px] px-6 pb-16 lg:px-8">
+        <div className="mx-auto max-w-3xl">
+          <Eyebrow n="01">The app</Eyebrow>
+          <Heading>Four pages: home, news, markets and weather</Heading>
+          <p className="mt-5 text-base leading-relaxed text-theme-fg-muted">
+            Each page has its own data source and its own plan for when that source fails. All four share one header, light and dark themes that clear WCAG AA contrast, and an end-to-end suite that runs them on desktop and phone browsers.
+          </p>
+        </div>
+        <div className="mt-12 space-y-16">
+          {pages.map((p, i) => (
+            <div key={p.title} className={`grid items-center gap-8 md:gap-10 ${i % 2 ? 'md:grid-cols-[1fr_1.35fr]' : 'md:grid-cols-[1.35fr_1fr]'}`}>
+              <div className={i % 2 ? 'md:order-2' : undefined}>
+                <Shot src={p.src} alt={p.alt} sizes="(max-width: 768px) 100vw, 620px" />
+              </div>
+              <div>
+                <p className="font-mono text-[0.7rem] text-theme-fg-dim">{String(i + 1).padStart(2, '0')} / 04</p>
+                <h3 className="mt-1 font-display text-2xl text-theme-fg">{p.title}</h3>
+                <p className="mt-2 text-base text-theme-fg">{p.summary}</p>
+                <ul className="mt-4 space-y-2.5">
+                  {p.points.map((point) => (
+                    <li key={point} className="flex gap-3 text-sm leading-relaxed text-theme-fg-muted">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-theme-accent" aria-hidden />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <Section divider className="py-16 md:py-20">
+        <div className="mx-auto max-w-3xl space-y-20">
           <div>
-            <Eyebrow n="01">The problem</Eyebrow>
+            <Eyebrow n="02">The problem</Eyebrow>
             <Heading>A news site tells you what is new, not what happened</Heading>
             <div className="mt-5 space-y-4 text-base leading-relaxed text-theme-fg-muted">
               <p>
@@ -283,7 +338,7 @@ export function TheNewspaperCaseStudy({ project }: { project: CustomProject }) {
           </div>
 
           <div>
-            <Eyebrow n="02">How an answer is made</Eyebrow>
+            <Eyebrow n="03">How an answer is made</Eyebrow>
             <Heading>Six steps, and the model only writes one of them</Heading>
             <ol className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {pipeline.map((p, i) => (
@@ -300,7 +355,7 @@ export function TheNewspaperCaseStudy({ project }: { project: CustomProject }) {
           </div>
 
           <div>
-            <Eyebrow n="03">Measured, not guessed</Eyebrow>
+            <Eyebrow n="04">Measured, not guessed</Eyebrow>
             <Heading>An eval decided the model, the search and the cutoff</Heading>
             <p className="mt-5 text-base leading-relaxed text-theme-fg-muted">
               The eval runs on a 1,027-article snapshot of production and 40 questions: 32 with the articles that answer them labelled, and 8 the snapshot cannot answer. Search is scored on its own, then answers are scored for citation precision, honest refusals and a blind rubric graded by Claude Opus 5.5.
@@ -341,7 +396,7 @@ export function TheNewspaperCaseStudy({ project }: { project: CustomProject }) {
           </div>
 
           <div>
-            <Eyebrow n="04">Choosing the cutoff</Eyebrow>
+            <Eyebrow n="05">Choosing the cutoff</Eyebrow>
             <Heading>Which related stories deserve a place under the answer?</Heading>
             <p className="mt-5 text-base leading-relaxed text-theme-fg-muted">
               Search always returns 8 results, related or not. The first version showed all of them. Drag the line to see what each cutoff would have kept, using the real scores from the eval.
@@ -352,39 +407,6 @@ export function TheNewspaperCaseStudy({ project }: { project: CustomProject }) {
           </div>
         </div>
       </Section>
-
-      <section className="mx-auto max-w-[1100px] px-6 pb-16 lg:px-8">
-        <div className="mx-auto max-w-3xl">
-          <Eyebrow n="05">The product</Eyebrow>
-          <Heading>A front page you can question</Heading>
-          <p className="mt-5 text-base leading-relaxed text-theme-fg-muted">
-            Seven sections from eleven feeds, a markets page and a weather dashboard, in light and dark themes that clear WCAG AA contrast. Ask lives in the same box as search.
-          </p>
-        </div>
-        <div className="mt-10 grid gap-x-6 gap-y-10 md:grid-cols-2">
-          {tour.map((t) => (
-            <figure key={t.src}>
-              <Shot src={t.src} alt={t.caption} sizes="(max-width: 768px) 100vw, 530px" />
-              <figcaption className="mt-4 text-sm leading-relaxed text-theme-fg-muted">{t.caption}</figcaption>
-            </figure>
-          ))}
-        </div>
-        <div className="mt-12 grid gap-4 md:grid-cols-2">
-          {pages.map((p) => (
-            <div key={p.title} className={card} style={cardStyle}>
-              <h3 className="text-sm font-semibold text-theme-fg">{p.title}</h3>
-              <ul className="mt-3 space-y-2.5">
-                {p.points.map((point) => (
-                  <li key={point} className="flex gap-3 text-sm leading-relaxed text-theme-fg-muted">
-                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-theme-accent" aria-hidden />
-                    {point}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
 
       <Section divider className="py-16 md:py-20">
         <div className="mx-auto max-w-3xl space-y-20">
