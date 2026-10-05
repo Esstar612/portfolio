@@ -347,14 +347,6 @@ export function TheNewspaperCaseStudy({ project }: { project: CustomProject }) {
             </figure>
           ))}
         </div>
-        <div className="mt-10 grid items-center gap-8 md:grid-cols-[220px_1fr]">
-          <div className="relative mx-auto aspect-[393/659] w-full max-w-[220px] overflow-hidden rounded-[1.6rem]" style={{ border: '5px solid var(--color-bg-elevated)', boxShadow: '0 20px 50px rgba(0,0,0,0.25)' }}>
-            <Image src={`${IMG}/mobile.jpg`} alt="The Newspaper's news page on a phone, with the search box and the When filter on its own line" fill sizes="220px" className="object-cover object-top" />
-          </div>
-          <p className="text-sm leading-relaxed text-theme-fg-muted">
-            On a phone the box spans the width and the When filter takes its own line. Every end-to-end flow runs on an iPhone profile in CI, so a control that disappears at phone width fails the build.
-          </p>
-        </div>
       </section>
 
       <Section divider className="py-16 md:py-20">
