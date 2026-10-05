@@ -174,7 +174,7 @@ const cardStyle = { border: '1px solid var(--color-border)', background: 'var(--
 function Shot({ src, alt, priority, sizes }: { src: string; alt: string; priority?: boolean; sizes: string }) {
   return (
     <div className="relative aspect-[1360/900] overflow-hidden rounded-2xl" style={{ border: '1px solid var(--color-border)', background: 'var(--color-bg-elevated)' }}>
-      <Image src={src} alt={alt} fill sizes={sizes} className="object-cover object-top" priority={priority} />
+      <Image src={src} alt={alt} fill sizes={sizes} quality={90} className="object-cover object-top" priority={priority} />
     </div>
   );
 }
@@ -300,9 +300,9 @@ export function TheNewspaperCaseStudy({ project }: { project: CustomProject }) {
         </div>
         <div className="mt-12 space-y-16">
           {pages.map((p, i) => (
-            <div key={p.title} className={`grid items-center gap-8 md:gap-10 ${i % 2 ? 'md:grid-cols-[1fr_1.35fr]' : 'md:grid-cols-[1.35fr_1fr]'}`}>
+            <div key={p.title} className={`grid items-center gap-8 md:gap-10 ${i % 2 ? 'md:grid-cols-[1fr_1.7fr]' : 'md:grid-cols-[1.7fr_1fr]'}`}>
               <div className={i % 2 ? 'md:order-2' : undefined}>
-                <Shot src={p.src} alt={p.alt} sizes="(max-width: 768px) 100vw, 620px" />
+                <Shot src={p.src} alt={p.alt} sizes="(max-width: 768px) 100vw, 680px" />
               </div>
               <div>
                 <p className="font-mono text-[0.7rem] text-theme-fg-dim">{String(i + 1).padStart(2, '0')} / 04</p>
@@ -405,11 +405,7 @@ export function TheNewspaperCaseStudy({ project }: { project: CustomProject }) {
               <CutoffExplorer />
             </div>
           </div>
-        </div>
-      </Section>
 
-      <Section divider className="py-16 md:py-20">
-        <div className="mx-auto max-w-3xl space-y-20">
           <div>
             <Eyebrow n="06">What did not work</Eyebrow>
             <Heading>Six results I would rather not have, kept on the record</Heading>
