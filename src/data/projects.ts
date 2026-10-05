@@ -93,7 +93,7 @@ export const projects: Project[] = [
     description:
       'Ask the news a question and get an answer built only from the coverage, with every claim linked to its article. Retrieval in Pinecone, answers from Claude with citations checked in code, follow-up threads, and a related-stories cutoff chosen on labelled data. 362 unit tests, Playwright on three browser engines, and Datadog monitors that caught a real failure.',
     tags: ['Next.js', 'TypeScript', 'RAG', 'Pinecone', 'Claude', 'MongoDB', 'Playwright', 'Vitest', 'Datadog', 'GitHub Actions', 'Vercel'],
-    thumbnail: '/images/projects/newspaper/ask-answer.jpg',
+    thumbnail: '/images/projects/newspaper/home.jpg',
     featured: true,
     year: '2026',
     links: {

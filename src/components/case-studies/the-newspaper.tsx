@@ -48,10 +48,10 @@ const followups = [
 ];
 
 const tour = [
-  { src: `${IMG}/ask-suggestions.jpg`, caption: 'Typing lists matching headlines under an "Ask" option. Arrow keys move, Enter asks, and the section and time window are always visible.' },
-  { src: `${IMG}/ask-answer.jpg`, caption: 'A cited answer. The number opens the article it came from, and the article is listed beside the answer with its outlet and age.' },
-  { src: `${IMG}/news-when.jpg`, caption: 'The When filter narrows search and Ask to the past week, month or year, so "what is the latest" questions search recent coverage.' },
+  { src: `${IMG}/home.jpg`, caption: 'The front page: the newest story with a picture leads, then nine features, with the rest in brief and a markets strip under the date.' },
+  { src: `${IMG}/ask-suggestions.jpg`, caption: 'News: typing lists matching headlines under an "Ask" option. Arrow keys move, Enter asks, and the When filter narrows search and Ask to the past week, month or year.' },
   { src: `${IMG}/markets.jpg`, caption: 'Markets: a watchlist and a price chart served from MongoDB, so the chart keeps working when the quote provider refuses a request.' },
+  { src: `${IMG}/weather.jpg`, caption: 'Weather: search a city or use your location for current conditions and a 5-day forecast of temperature and humidity.' },
 ];
 
 const failures = [
